@@ -1,0 +1,20 @@
+{
+  "name": "altron",
+  "version": "1.0.0",
+  "description": "Altron is a free, open-source password manager that prioritizes security and privacy by storing all data locally on your device. With military-grade AES-256-GCM encryption and a zero-knowledge architecture, Altron ensures that only you have access to your passwords—no cloud sync, no servers, no tracking.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/srsdesigndev/altron.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/srsdesigndev/altron/issues"
+  },
+  "homepage": "https://github.com/srsdesigndev/altron#readme"
+}
