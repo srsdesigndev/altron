@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Manager</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/dashboard/style.css">
+</head>
+<body class="h-screen flex flex-col overflow-hidden">
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+        <div class="w-12 h-12 border-4 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
+    </div>
+    <!-- Help Modal -->
+    <div id="helpModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+        onclick="closeHelpOnBackdrop(event)">
+        <div class="bg-secondary rounded-xl shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden flex flex-col"
+            onclick="event.stopPropagation()">
+            <!-- Modal Header -->
+            <div class="px-6 py-4 border-b border-custom flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <i class="fas fa-question-circle accent-color text-2xl"></i>
+                    <h2 class="text-xl font-semibold text-primary">How to Use</h2>
+                </div>
+                <button onclick="closeHelp()"
+                    class="w-8 h-8 flex items-center justify-center rounded-lg text-secondary hover:bg-tertiary transition">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="flex-1 overflow-y-auto px-6 py-6">
+                <div class="space-y-6">
+                    <!-- Master Key Info -->
+                    <div>
+                        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center gap-2">
+                            <i class="fas fa-key accent-color text-sm"></i>
+                            What is a Master Key?
+                        </h3>
+                        <p class="text-secondary mb-2">
+                            Your master key is a password that encrypts all your saved passwords using AES-256
+                            encryption.
+                            Think of it as the <strong class="text-primary">one password to rule them all</strong>.
+                        </p>
+                        <ul class="list-disc list-inside space-y-2 text-secondary ml-4">
+                            <li>Choose a <strong class="text-primary">strong, memorable</strong> master key</li>
+                            <li>This key is <strong class="text-primary">never stored</strong> anywhere</li>
+                            <li>If you forget it, your passwords <strong class="text-primary">cannot be
+                                    recovered</strong></li>
+                            <li>First time? Enter a new master key to get started</li>
+                        </ul>
+                    </div>
+
+                    <!-- Storage Folder Info -->
+                    <div>
+                        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center gap-2">
+                            <i class="fas fa-folder-open accent-color text-sm"></i>
+                            What is a Storage Folder?
+                        </h3>
+                        <p class="text-secondary mb-2">
+                            The storage folder is where your <strong class="text-primary">encrypted password
+                                file</strong> will be saved on your computer.
+                            All data stays on your device - nothing is sent to any server.
+                        </p>
+                        <ul class="list-disc list-inside space-y-2 text-secondary ml-4">
+                            <li>Choose a <strong class="text-primary">secure location</strong> on your computer</li>
+                            <li>Creates a file called <code
+                                    class="text-primary bg-tertiary px-1 py-0.5 rounded">passwords.enc</code></li>
+                            <li>File is <strong class="text-primary">encrypted</strong> and can only be read with your
+                                master key</li>
+                            <li>Works completely <strong class="text-primary">offline</strong> - no internet needed</li>
+                        </ul>
+                    </div>
+
+                    <!-- Getting Started -->
+                    <div>
+                        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center gap-2">
+                            <i class="fas fa-rocket accent-color text-sm"></i>
+                            Getting Started
+                        </h3>
+                        <ol class="list-decimal list-inside space-y-2 text-secondary">
+                            <li>Click <strong class="text-primary">Select Storage Folder</strong> to choose where your
+                                encrypted passwords will be stored</li>
+                            <li>Enter a <strong class="text-primary">Master Key</strong> - this encrypts all your
+                                passwords (keep it safe!)</li>
+                            <li>Click <strong class="text-primary">Unlock</strong> to access the app</li>
+                        </ol>
+                    </div>
+
+                    <!-- Generating Passwords -->
+                    <div>
+                        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center gap-2">
+                            <i class="fas fa-dice accent-color text-sm"></i>
+                            Generating Passwords
+                        </h3>
+                        <p class="text-secondary mb-2">Use the password generator to create strong, random passwords:
+                        </p>
+                        <ul class="list-disc list-inside space-y-2 text-secondary ml-4">
+                            <li>Adjust the length slider (8-64 characters)</li>
+                            <li>Select character types: uppercase, lowercase, numbers, symbols</li>
+                            <li>Click <strong class="text-primary">Generate</strong> to create a new password</li>
+                            <li>The strength meter shows how secure your password is</li>
+                        </ul>
+                    </div>
+                    <!-- Saving Passwords -->
+                    <div>
+                        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center gap-2">
+                            <i class="fas fa-save accent-color text-sm"></i>
+                            Saving Passwords
+                        </h3>
+                        <ol class="list-decimal list-inside space-y-2 text-secondary">
+                            <li>After generating a password, the save form will appear</li>
+                            <li>Enter a <strong class="text-primary">Label</strong> (e.g., GitHub, Gmail, Banking)</li>
+                            <li>The generated password is automatically filled</li>
+                            <li>Check the confirmation box to confirm you'll use this password</li>
+                            <li>Click <strong class="text-primary">Save</strong></li>
+                        </ol>
+                    </div>
+
+                    <!-- Managing Passwords -->
+                    <div>
+                        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center gap-2">
+                            <i class="fas fa-list accent-color text-sm"></i>
+                            Managing Passwords
+                        </h3>
+                        <ul class="list-disc list-inside space-y-2 text-secondary ml-4">
+                            <li><strong class="text-primary">Search:</strong> Use the search box to filter passwords by
+                                label</li>
+                            <li><strong class="text-primary">View:</strong> Click the eye icon to see password details
+                            </li>
+                            <li><strong class="text-primary">Copy:</strong> Click the copy icon to copy password to
+                                clipboard</li>
+                            <li><strong class="text-primary">Delete:</strong> Click the trash icon to remove a password
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Themes -->
+                    <div>
+                        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center gap-2">
+                            <i class="fas fa-palette accent-color text-sm"></i>
+                            Themes
+                        </h3>
+                        <p class="text-secondary mb-2">Choose from 6 beautiful themes:</p>
+                        <ul class="list-disc list-inside space-y-2 text-secondary ml-4">
+                            <li><strong class="text-primary">Light:</strong> Clean and minimal default theme</li>
+                            <li><strong class="text-primary">Dark:</strong> Comfortable dark mode</li>
+                            <li><strong class="text-primary">VS Code Dark:</strong> Classic editor theme</li>
+                            <li><strong class="text-primary">Monokai:</strong> Vibrant dark theme</li>
+                            <li><strong class="text-primary">Solarized Dark:</strong> Eye-friendly dark theme</li>
+                            <li><strong class="text-primary">Neon:</strong> Futuristic cyberpunk theme</li>
+                        </ul>
+                    </div>
+
+                    <!-- Security & Important Notes -->
+                    <div>
+                        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center gap-2">
+                            <i class="fas fa-shield-alt accent-color text-sm"></i>
+                            Security & Important Notes
+                        </h3>
+                        <ul class="list-disc list-inside space-y-2 text-secondary ml-4">
+                            <li>All passwords are encrypted with <strong class="text-primary">AES-256</strong> using
+                                your master key</li>
+                            <li>Data is stored <strong class="text-primary">locally</strong> on your device - never
+                                uploaded to any server</li>
+                            <li>This app requires <strong class="text-primary">Chrome or Edge</strong> browser</li>
+                            <li>Your master key is <strong class="text-primary">never stored</strong> - if you forget
+                                it, passwords cannot be recovered</li>
+                            <li>The app works <strong class="text-primary">completely offline</strong></li>
+                            <li>Click <strong class="text-primary">Lock</strong> when you're done to secure your
+                                passwords</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="px-6 py-4 border-t border-custom flex justify-end">
+                <button onclick="closeHelp()"
+                    class="px-4 py-2 bg-accent text-white rounded-lg hover:bg-accent-hover transition">
+                    Got it!
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- View Password Modal -->
+    <div id="viewPasswordModal"
+        class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
+        onclick="closeViewPasswordOnBackdrop(event)">
+        <div class="bg-secondary rounded-xl shadow-2xl max-w-md w-full" onclick="event.stopPropagation()">
+            <!-- Modal Header -->
+            <div class="px-6 py-4 border-b border-custom flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <i class="fas fa-eye accent-color text-xl"></i>
+                    <h2 class="text-xl font-semibold text-primary">Password Details</h2>
+                </div>
+                <button onclick="closeViewPassword()"
+                    class="w-8 h-8 flex items-center justify-center rounded-lg text-secondary hover:bg-tertiary transition">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body -->
+            <div class="px-6 py-6 space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-secondary mb-1">Label</label>
+                    <div class="text-primary font-semibold" id="viewPasswordLabel"></div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-secondary mb-1">Password</label>
+                    <div class="relative">
+                        <div class="px-3 py-2 bg-tertiary border border-custom rounded-lg font-mono text-sm text-primary break-all pr-12"
+                            id="viewPasswordText"></div>
+                        <button onclick="toggleViewPasswordVisibility()" type="button"
+                            class="absolute right-2 top-1/2 -translate-y-1/2 icon-standard text-secondary hover:text-blue-500 transition">
+                            <i class="fas fa-eye" id="toggleViewPasswordIcon"></i>
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-secondary mb-1">Created</label>
+                    <div class="text-primary text-sm" id="viewPasswordDate"></div>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="px-6 py-4 border-t border-custom flex justify-end gap-2">
+                <button onclick="copyViewedPassword()"
+                    class="px-4 py-2 bg-accent text-white rounded-lg hover:bg-accent-hover transition flex items-center gap-2">
+                    <i class="fas fa-copy"></i> Copy Password
+                </button>
+                <button onclick="closeViewPassword()"
+                    class="px-4 py-2 bg-secondary border border-custom rounded-lg text-primary hover:bg-tertiary transition">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav id="navbar" class="hidden bg-secondary border-b border-custom px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <i class="fas fa-shield-alt accent-color text-xl"></i>
+            <span class="text-lg font-semibold text-primary">Password Manager</span>
+        </div>
+        <div class="flex items-center gap-3">
+            <button onclick="openHelp()"
+                class="px-3 py-2 bg-tertiary border border-custom rounded-lg text-primary hover:bg-secondary transition flex items-center gap-2"
+                title="Help">
+                <i class="fas fa-question-circle"></i> Help
+            </button>
+            <select onchange="changeTheme(this.value)"
+                class="px-3 py-2 bg-tertiary border border-custom rounded-lg text-primary text-sm focus:outline-none focus:border-blue-500">
+                <option value="light">Light</option>
+                <option value="dark">Dark</option>
+                <option value="vscode-dark">VS Code Dark</option>
+                <option value="monokai">Monokai</option>
+                <option value="solarized-dark">Solarized Dark</option>
+                <option value="neon">Neon</option>
+            </select>
+            <button onclick="lockApp()" class="px-3 py-2 bg-danger text-white rounded-lg hover:opacity-90 transition"
+                title="Lock">
+                <i class="fas fa-lock"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="flex-1 overflow-hidden flex flex-col">
+        <div class="max-w-4xl mx-auto w-full h-full overflow-y-auto px-5 py-6">
+            <!-- Status Message -->
+            <div id="statusMessage" class="hidden mb-5 px-4 py-3 rounded-lg border-l-4"></div>
+
+            <!-- Lock Screen -->
+            <div id="lockScreen" class="flex flex-col items-center justify-center min-h-[60vh] text-center px-5 py-10">
+                <i class="fas fa-lock text-5xl accent-color mb-5"></i>
+                <h2 class="text-3xl font-semibold text-primary mb-3">Enter Master Key</h2>
+                <p class="text-secondary mb-4">Your master key encrypts all passwords locally</p>
+
+                <!-- Learn More Button -->
+                <button onclick="openHelp()"
+                    class="mb-8 text-accent hover:underline flex items-center gap-2 text-sm font-medium">
+                    <i class="fas fa-question-circle"></i>
+                    What is a Master Key & Storage Folder?
+                </button>
+
+                <div class="w-full max-w-md">
+                    <div class="mb-4">
+                        <div class="relative">
+                            <input type="password" id="masterKeyInput" placeholder="Master key"
+                                class="w-full px-3 py-2 pr-12 bg-tertiary border border-custom rounded-lg text-primary focus:outline-none focus:border-blue-500">
+                            <button onclick="toggleMasterKeyVisibility()" type="button"
+                                class="absolute right-2 top-1/2 -translate-y-1/2 icon-standard text-secondary hover:text-blue-500 transition">
+                                <i class="fas fa-eye" id="toggleMasterKeyIcon"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button onclick="unlockApp()"
+                        class="w-full bg-accent text-white px-4 py-2 rounded-lg hover:bg-accent-hover transition flex items-center justify-center gap-2">
+                        <i class="fas fa-unlock"></i> Unlock
+                    </button>
+                    <p class="mt-4 text-sm text-secondary">First time? Enter a new master key</p>
+                </div>
+
+                <div class="mt-8">
+                    <button onclick="selectDirectory()"
+                        class="bg-secondary border border-custom px-4 py-2 rounded-lg text-primary hover:bg-tertiary transition flex items-center gap-2">
+                        <i class="fas fa-folder-open icon-standard"></i> Select Storage Folder
+                    </button>
+                    <p id="selectedPath" class="mt-2 text-sm text-secondary"></p>
+                </div>
+            </div>
+
+            <!-- Main App -->
+            <div id="mainApp" class="hidden">
+                <!-- Tabs -->
+                <div class="flex gap-0 border-b-2 border-custom mb-6">
+                    <button onclick="switchTab('create')"
+                        class="tab-btn px-6 py-3 text-secondary font-medium border-b-2 border-transparent -mb-0.5 hover:text-primary transition tab-active">
+                        <i class="fas fa-plus mr-2"></i> Create New
+                    </button>
+                    <button onclick="switchTab('passwords')"
+                        class="tab-btn px-6 py-3 text-secondary font-medium border-b-2 border-transparent -mb-0.5 hover:text-primary transition">
+                        <i class="fas fa-list mr-2"></i> Passwords <span id="passwordCount"
+                            class="text-secondary">(0)</span>
+                    </button>
+                </div>
+
+                <!-- Create Tab -->
+                <div id="createTab" class="tab-content">
+                    <!-- Password Generator -->
+                    <div class="bg-secondary border border-custom rounded-xl p-6 mb-4 shadow-sm">
+                        <div class="flex items-center gap-2 mb-5">
+                            <i class="fas fa-key accent-color"></i>
+                            <h3 class="text-lg font-semibold text-primary">Generate Password</h3>
+                        </div>
+
+                        <div class="mb-5">
+                            <div class="flex justify-between items-center mb-2">
+                                <label class="text-sm font-medium text-primary">Length</label>
+                                <span id="lengthValue" class="text-sm font-semibold accent-color">16</span>
+                            </div>
+                            <input type="range" id="passwordLength" min="8" max="64" value="16"
+                                class="w-full h-1.5 bg-gray-300 rounded-lg appearance-none cursor-pointer"
+                                oninput="document.getElementById('lengthValue').textContent = this.value">
+                        </div>
+
+                        <div class="mb-5">
+                            <label class="block text-sm font-medium text-primary mb-2">Options</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div class="flex items-center gap-2">
+                                    <input type="checkbox" id="useUppercase" checked class="w-4 h-4 cursor-pointer">
+                                    <label for="useUppercase"
+                                        class="text-sm cursor-pointer text-primary">Uppercase</label>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <input type="checkbox" id="useLowercase" checked class="w-4 h-4 cursor-pointer">
+                                    <label for="useLowercase"
+                                        class="text-sm cursor-pointer text-primary">Lowercase</label>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <input type="checkbox" id="useNumbers" checked class="w-4 h-4 cursor-pointer">
+                                    <label for="useNumbers" class="text-sm cursor-pointer text-primary">Numbers</label>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <input type="checkbox" id="useSymbols" checked class="w-4 h-4 cursor-pointer">
+                                    <label for="useSymbols" class="text-sm cursor-pointer text-primary">Symbols</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button onclick="generatePassword()"
+                            class="bg-accent text-white px-4 py-2 rounded-lg hover:bg-accent-hover transition flex items-center gap-2">
+                            <i class="fas fa-dice"></i> Generate
+                        </button>
+
+                        <div id="generatedPasswordSection" class="hidden mt-4">
+                            <div class="flex gap-2">
+                                <div class="flex-1 px-3 py-2 bg-tertiary border border-custom rounded-lg font-mono text-sm text-primary break-all"
+                                    id="generatedPassword"></div>
+                                <button onclick="copyToClipboard()"
+                                    class="px-3 py-2 bg-secondary border border-custom rounded-lg hover:bg-tertiary transition">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                            <div class="mt-3 h-1 bg-gray-200 rounded-full overflow-hidden">
+                                <div id="strengthBar" class="h-full transition-all duration-300"></div>
+                            </div>
+                            <p id="strengthText" class="mt-1 text-sm font-medium"></p>
+                        </div>
+                    </div>
+
+                    <!-- Save Password -->
+                    <div id="savePasswordCard"
+                        class="hidden bg-secondary border border-custom rounded-xl p-6 shadow-sm">
+                        <div class="flex items-center gap-2 mb-5">
+                            <i class="fas fa-save accent-color"></i>
+                            <h3 class="text-lg font-semibold text-primary">Save Password</h3>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-primary mb-2">Label</label>
+                            <input type="text" id="passwordLabel" placeholder="GitHub, Gmail, etc."
+                                class="w-full px-3 py-2 bg-tertiary border border-custom rounded-lg text-primary focus:outline-none focus:border-blue-500">
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="block text-sm font-medium text-primary mb-2">Password</label>
+                            <div class="relative">
+                                <input type="password" id="passwordToSave" placeholder="Generated password" readonly
+                                    class="w-full px-3 py-2 pr-12 bg-tertiary border border-custom rounded-lg text-primary focus:outline-none focus:border-blue-500">
+                                <button onclick="toggleSavePasswordVisibility()" type="button"
+                                    class="absolute right-2 top-1/2 -translate-y-1/2 icon-standard text-secondary hover:text-blue-500 transition">
+                                    <i class="fas fa-eye" id="toggleSavePasswordIcon"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center gap-2 mb-4">
+                            <input type="checkbox" id="confirmUsed" class="w-4 h-4 cursor-pointer">
+                            <label for="confirmUsed" class="text-sm cursor-pointer text-primary">I confirm, I will use
+                                this as my password</label>
+                        </div>
+
+                        <button onclick="savePassword()"
+                            class="bg-success text-white px-4 py-2 rounded-lg hover:opacity-90 transition flex items-center gap-2">
+                            <i class="fas fa-check"></i> Save
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Passwords Tab -->
+                <div id="passwordsTab" class="tab-content hidden">
+                    <div class="bg-secondary border border-custom rounded-xl p-6 shadow-sm">
+                        <div id="searchBox" class="hidden mb-5">
+                            <div class="relative">
+                                <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-secondary"></i>
+                                <input type="search" id="searchInput" placeholder="Search passwords..."
+                                    oninput="filterPasswords()"
+                                    class="w-full pl-10 pr-3 py-2 bg-tertiary border border-custom rounded-lg text-primary focus:outline-none focus:border-blue-500">
+                            </div>
+                        </div>
+
+                        <ul id="passwordList" class="space-y-2"></ul>
+
+                        <div id="emptyMessage" class="text-center py-12 text-secondary">
+                            <i class="fas fa-inbox text-5xl mb-4 opacity-50"></i>
+                            <p>No passwords saved yet</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer id="footer"
+        class="hidden bg-secondary border-t border-custom px-6 py-3 text-center text-sm text-secondary flex items-center justify-center gap-4">
+        <span>Encrypted locally • AES-256 • No cloud storage</span>
+        <span>•</span>
+        <a href="https://github.com" target="_blank" rel="noopener noreferrer"
+            class="flex items-center gap-2 hover:text-blue-500 transition">
+            <i class="fab fa-github"></i> View on GitHub
+        </a>
+    </footer>
+    <script src="/script/dashboard/config.js"></script>
+    <script src="/script/dashboard/script.js"></script>
+</body>
+
+</html>

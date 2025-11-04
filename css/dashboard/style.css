@@ -1,0 +1,179 @@
+/* Theme Variables */
+:root[data-theme="light"] {
+    --bg-primary: #f5f5f7;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #fafafa;
+    --text-primary: #1d1d1f;
+    --text-secondary: #86868b;
+    --border-color: #e5e5ea;
+    --accent: #007aff;
+    --accent-hover: #0051d5;
+    --success: #34c759;
+    --danger: #ff3b30;
+}
+
+:root[data-theme="dark"] {
+    --bg-primary: #1e1e1e;
+    --bg-secondary: #2d2d30;
+    --bg-tertiary: #252526;
+    --text-primary: #cccccc;
+    --text-secondary: #858585;
+    --border-color: #3e3e42;
+    --accent: #0e639c;
+    --accent-hover: #1177bb;
+    --success: #0e7c3a;
+    --danger: #c72e0f;
+}
+
+:root[data-theme="vscode-dark"] {
+    --bg-primary: #1e1e1e;
+    --bg-secondary: #252526;
+    --bg-tertiary: #2d2d30;
+    --text-primary: #d4d4d4;
+    --text-secondary: #858585;
+    --border-color: #3e3e42;
+    --accent: #0e639c;
+    --accent-hover: #1177bb;
+    --success: #89d185;
+    --danger: #f48771;
+}
+
+:root[data-theme="monokai"] {
+    --bg-primary: #272822;
+    --bg-secondary: #3e3d32;
+    --bg-tertiary: #49483e;
+    --text-primary: #f8f8f2;
+    --text-secondary: #75715e;
+    --border-color: #49483e;
+    --accent: #66d9ef;
+    --accent-hover: #7ee0f3;
+    --success: #a6e22e;
+    --danger: #f92672;
+}
+
+:root[data-theme="solarized-dark"] {
+    --bg-primary: #002b36;
+    --bg-secondary: #073642;
+    --bg-tertiary: #094454;
+    --text-primary: #839496;
+    --text-secondary: #586e75;
+    --border-color: #094454;
+    --accent: #268bd2;
+    --accent-hover: #3a9ae0;
+    --success: #859900;
+    --danger: #dc322f;
+}
+
+:root[data-theme="neon"] {
+    --bg-primary: #0a0e27;
+    --bg-secondary: #1a1f3a;
+    --bg-tertiary: #252b48;
+    --text-primary: #e0e0ff;
+    --text-secondary: #8888aa;
+    --border-color: #2d3458;
+    --accent: #39ff14;
+    --accent-hover: #33ffff;
+    --success: #39ff14;
+    --danger: #ff006e;
+}
+
+body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.bg-primary {
+    background-color: var(--bg-primary);
+}
+
+.bg-secondary {
+    background-color: var(--bg-secondary);
+}
+
+.bg-tertiary {
+    background-color: var(--bg-tertiary);
+}
+
+.text-primary {
+    color: var(--text-primary);
+}
+
+.text-secondary {
+    color: var(--text-secondary);
+}
+
+.border-custom {
+    border-color: var(--border-color);
+}
+
+.accent-color {
+    color: var(--accent);
+}
+
+.bg-accent {
+    background-color: var(--accent);
+}
+
+.bg-accent:hover {
+    background-color: var(--accent-hover);
+}
+
+.bg-success {
+    background-color: var(--success);
+}
+
+.bg-danger {
+    background-color: var(--danger);
+}
+
+.icon-standard {
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--accent);
+    cursor: pointer;
+    border: none;
+}
+
+input[type="checkbox"] {
+    accent-color: var(--accent);
+}
+
+.tab-active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
