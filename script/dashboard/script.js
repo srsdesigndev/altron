@@ -140,8 +140,16 @@ function toggleSavePasswordVisibility() {
 function switchTab(tabName) {
     // Update tab buttons
     const tabs = document.querySelectorAll('.tab-btn');
-    tabs.forEach(tab => tab.classList.remove('tab-active'));
-    event.target.closest('.tab-btn').classList.add('tab-active');
+    tabs.forEach(tab => {
+        tab.classList.remove('tab-active');
+    });
+    
+    // Find and activate the correct tab button
+    if (tabName === 'create') {
+        tabs[0].classList.add('tab-active');
+    } else if (tabName === 'passwords') {
+        tabs[1].classList.add('tab-active');
+    }
 
     // Update tab content
     document.getElementById('createTab').classList.add('hidden');
@@ -149,7 +157,7 @@ function switchTab(tabName) {
 
     if (tabName === 'create') {
         document.getElementById('createTab').classList.remove('hidden');
-    } else {
+    } else if (tabName === 'passwords') {
         document.getElementById('passwordsTab').classList.remove('hidden');
     }
 }
@@ -405,6 +413,14 @@ async function savePassword() {
 
         passwords.push(passwordEntry);
         await savePasswords();
+        
+        // Update filtered passwords to include the new one
+        filteredPasswords = passwords;
+        
+        // Clear search input to show all passwords
+        document.getElementById('searchInput').value = '';
+        
+        // Render the updated list
         renderPasswordList();
 
         document.getElementById('passwordLabel').value = '';
@@ -420,9 +436,8 @@ async function savePassword() {
         savePasswordIcon.classList.remove('fa-eye-slash');
         savePasswordIcon.classList.add('fa-eye');
 
-        // Switch to passwords tab
-        const passwordsTab = document.querySelectorAll('.tab-btn')[1];
-        passwordsTab.click();
+        // Switch to passwords tab programmatically
+        switchTab('passwords');
 
         showStatus('Password saved successfully', 'success');
         setTimeout(() => hideStatus(), 2000);
