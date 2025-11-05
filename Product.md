@@ -1,760 +1,540 @@
 # Altron - Product Documentation
 
-## Table of Contents
-- [Introduction](#introduction)
-- [Problem Statement](#problem-statement)
-- [Solution](#solution)
-- [Key Features](#key-features)
-- [How It Works](#how-it-works)
-- [Technology Stack](#technology-stack)
-- [Security Architecture](#security-architecture)
-- [User Interface](#user-interface)
-- [Use Cases](#use-cases)
-- [Browser Compatibility](#browser-compatibility)
-- [Performance](#performance)
-- [Future Roadmap](#future-roadmap)
+## What is Altron?
+
+Altron is a local password manager that stores your passwords on your device rather than in the cloud. It uses encryption to keep your passwords secure and requires no account creation or subscription.
+
+![Altron Landing Page](assets/landing-hero.png)
+
+### Core Principles
+
+- **Local Storage**: Your passwords never leave your device
+- **Free to Use**: No subscription fees or premium tiers
+- **Open Source**: Code is publicly available for review
+- **Offline Capable**: Works without an internet connection
+- **Privacy First**: No data collection or tracking
 
 ---
 
-## Introduction
+## Getting Started
 
-Altron is a **privacy-first, local password manager** built for users who value security and control over their sensitive data. Unlike traditional cloud-based password managers, Altron stores everything locally on your device with military-grade encryption, ensuring that only you have access to your passwords.
+### First Time Setup
 
-![Altron Landing Page](assets/img1.png)
+When you open Altron, you'll need to:
 
-### Vision
+1. **Select a folder** on your computer where passwords will be stored
+2. **Create a master key** that will encrypt your passwords
+3. **Grant permission** for the app to access the folder you selected
 
-To provide a simple, secure, and transparent password management solution that puts users back in control of their data without compromising on features or user experience.
+![Storage and Master Key Setup](assets/storage-and-master-key-auth.png)
 
-### Mission
+The master key is the only thing standing between your passwords and anyone who accesses your device. Choose something memorable but difficult to guess.
 
-Empower individuals with a free, open-source tool that prioritizes privacy, security, and offline functionality while maintaining an intuitive and beautiful interface.
+**Important**: If you forget your master key, your passwords cannot be recovered. This is by design for maximum security.
 
----
+### Understanding the Interface
 
-## Problem Statement
+Once unlocked, Altron opens to a simple dashboard with two main sections:
 
-### Current Challenges with Password Management
+![Dashboard View](assets/generate-form.png)
 
-1. **Cloud Dependency**: Most password managers require trust in third-party servers
-2. **Subscription Costs**: Premium features locked behind paywalls ($3-10/month)
-3. **Privacy Concerns**: User data stored on remote servers vulnerable to breaches
-4. **Vendor Lock-in**: Difficult to migrate between services
-5. **Internet Requirement**: Limited offline functionality
-6. **Closed Source**: No way to audit security claims
+**Create New**: Generate and save new passwords
 
-### The Privacy Paradox
-
-Users must choose between convenience (cloud sync) and privacy (local storage). Existing solutions rarely offer true zero-knowledge architecture without significant trade-offs.
+**Passwords**: View, search, and manage saved passwords
 
 ---
 
-## Solution
+## Core Features
 
-Altron addresses these challenges by providing:
+### Password Generation
 
-- ✅ **100% Local Storage** - No cloud, no servers, no data transmission
-- ✅ **Zero Cost** - Completely free with no premium tiers
-- ✅ **True Privacy** - Zero-knowledge architecture
-- ✅ **Open Source** - Fully transparent and auditable code
-- ✅ **Offline First** - No internet connection required
-- ✅ **User Control** - You own your data completely
+Altron helps you create strong, random passwords rather than reusing weak ones.
 
-![Altron Dashboard](assets/img2.png)
+![Password Generator](assets/generate-action.png)
 
----
+#### What You Can Control
 
-## Key Features
+- **Length**: Choose between 8 and 64 characters
+- **Character Types**: Mix uppercase, lowercase, numbers, and symbols
+- **Strength Indicator**: See how strong your password is in real-time
 
-### 🔐 Security Features
+The generator uses your browser's cryptographic functions to create truly random passwords. Once generated, you can copy it immediately or save it with a label for future reference.
 
-#### AES-256-GCM Encryption
-- Military-grade encryption standard
-- Same technology used by banks and governments
-- Each password encrypted individually with your master key
-- Galois/Counter Mode (GCM) provides authenticated encryption
+![Save Password Form](assets/password-save-form.png)
 
-#### Zero-Knowledge Architecture
-```
-User Master Key → Never Stored → Never Transmitted → Never Logged
-       ↓
-   Derives Encryption Key
-       ↓
-   Encrypts Passwords Locally
-       ↓
-   Saves to Local File System
-```
+### Managing Your Passwords
 
-![Encryption Flow](assets/img3.png)
+Your saved passwords appear in a searchable list. Each entry shows the label you assigned and when it was created.
 
-#### Master Key Protection
-- Master key exists only in browser memory during active session
-- Automatically cleared when locking the application
-- No password recovery mechanism (by design for maximum security)
-- No key stretching or salt storage required
+![Password List](assets/password-lists.png)
 
-### 🎲 Password Generator
+#### Available Actions
 
-![Password Generator](assets/img4.png)
+- **Search**: Filter passwords by typing in the search box
+- **View**: Click to see the full password
+- **Copy**: Copy password to clipboard with one click
+- **Delete**: Remove passwords you no longer need
 
-#### Features:
-- **Customizable Length**: 8 to 64 characters
-- **Character Sets**:
-  - Uppercase letters (A-Z)
-  - Lowercase letters (a-z)
-  - Numbers (0-9)
-  - Special symbols (!@#$%^&*...)
-- **Cryptographically Secure**: Uses Web Crypto API's `getRandomValues()`
-- **Real-time Strength Meter**: Visual feedback on password security
-- **One-Click Copy**: Instantly copy to clipboard
+![View Password Options](assets/view-or-copy-password.png)
 
-#### Password Strength Calculation
-```javascript
-Strength Score = (Length × 4) + (Character Variety × 10)
+Passwords are hidden by default. Click the eye icon to reveal them when needed.
 
-Levels:
-- Weak: < 40 points (Red)
-- Fair: 40-60 points (Orange)
-- Good: 60-80 points (Yellow)
-- Strong: 80-100 points (Light Green)
-- Very Strong: > 100 points (Dark Green)
-```
+### Themes
 
-### 💾 Storage Management
+Choose from six color schemes to match your preference. Your selection is remembered between sessions.
 
-![Storage Selection](assets/img5.png)
+![Available Themes](assets/themes-available.png)
 
-#### File System Access API
-- Direct file system access through browser
-- No file upload/download required
-- Automatic saving and loading
-- Single encrypted file: `passwords.enc`
+Themes include Light, Dark, VS Code Dark, Monokai, Solarized Dark, and Neon.
 
-#### Storage Flow:
-1. User selects folder on their computer
-2. Browser requests permission (one-time)
-3. Application creates `passwords.enc` file
-4. All passwords saved to this file (encrypted)
-5. File can only be decrypted with correct master key
+![Theme Selector](assets/themes-dropdown.png)
 
-### 🔍 Password Management
+### Locking the Application
 
-![Password List](assets/img6.png)
+When you step away from your computer, lock Altron to prevent unauthorized access.
 
-#### Core Operations:
+![Lock Screen](assets/lock-account.png)
 
-**View Passwords**
-- See all saved passwords in organized list
-- Each entry shows label and creation date
-- Click to view full details
-
-**Search Functionality**
-- Real-time filtering as you type
-- Searches password labels instantly
-- No delay, completely client-side
-
-**Copy to Clipboard**
-- One-click password copy
-- Works for both visible and hidden passwords
-- Automatic clipboard clearing (security feature)
-
-**Delete Passwords**
-- Confirmation before deletion
-- Permanent removal from encrypted file
-- No recovery possible (secure deletion)
-
-### 🎨 Theme System
-
-Altron includes 6 professionally designed themes to match your preferences:
-
-#### 1. Light Theme
-![Light Theme](assets/img7.png)
-- Clean, minimal design
-- High contrast for readability
-- Default theme for new users
-
-#### 2. Dark Theme
-![Dark Theme](assets/img8.png)
-- Comfortable for low-light environments
-- Reduces eye strain
-- Popular for extended usage
-
-#### 3. VS Code Dark
-![VS Code Theme](assets/img9.png)
-- Inspired by Visual Studio Code
-- Familiar to developers
-- Excellent contrast ratios
-
-#### 4. Monokai
-![Monokai Theme](assets/img10.png)
-- Vibrant color palette
-- Popular editor theme
-- Bold and distinctive
-
-#### 5. Solarized Dark
-![Solarized Theme](assets/img11.png)
-- Scientifically designed color scheme
-- Reduced eye fatigue
-- Carefully balanced contrast
-
-#### 6. Neon
-![Neon Theme](assets/img12.png)
-- Futuristic cyberpunk aesthetic
-- High-energy design
-- Unique visual identity
-
-**Theme Persistence**: Your theme choice is saved locally and restored on next visit.
+Click the lock icon in the top right corner. You'll need to enter your master key again to regain access.
 
 ---
 
 ## How It Works
 
-### Architecture Overview
+### The File System
 
-```
-┌─────────────────────────────────────────────────────┐
-│                   Browser Layer                      │
-│  ┌──────────────────────────────────────────────┐  │
-│  │          User Interface (HTML/CSS)            │  │
-│  └──────────────────────────────────────────────┘  │
-│                         ↓                            │
-│  ┌──────────────────────────────────────────────┐  │
-│  │      Application Logic (JavaScript)           │  │
-│  │  • Password Generation                        │  │
-│  │  • User Input Handling                        │  │
-│  │  • Theme Management                           │  │
-│  └──────────────────────────────────────────────┘  │
-│                         ↓                            │
-│  ┌──────────────────────────────────────────────┐  │
-│  │     Encryption Layer (Web Crypto API)         │  │
-│  │  • AES-256-GCM Encryption                     │  │
-│  │  • Secure Random Generation                   │  │
-│  │  • Key Derivation                             │  │
-│  └──────────────────────────────────────────────┘  │
-│                         ↓                            │
-│  ┌──────────────────────────────────────────────┐  │
-│  │   Storage Layer (File System Access API)      │  │
-│  │  • Direct File System Access                  │  │
-│  │  • Read/Write passwords.enc                   │  │
-│  └──────────────────────────────────────────────┘  │
-└─────────────────────────────────────────────────────┘
-                         ↓
-              ┌──────────────────────┐
-              │   Local File System   │
-              │   📁 passwords.enc    │
-              └──────────────────────┘
-```
+Altron creates a single file called `passwords.enc` in the folder you selected during setup. This file contains all your encrypted passwords.
 
-### Step-by-Step Flow
+![File Access Permission](assets/allow-file-access.png)
 
-#### 1. Initial Setup
-```
-User Opens App → Selects Storage Folder → Enters Master Key → Unlocks Dashboard
-```
+The file is saved automatically whenever you add or remove a password. You don't need to manually save or export anything.
 
-#### 2. Password Generation
-```
-User Configures Options → Clicks Generate → Crypto API Creates Random Password → 
-Displays to User → User Saves with Label
-```
+### Encryption Explained Simply
 
-#### 3. Encryption & Storage
-```
-User Saves Password → Master Key Derives Encryption Key → 
-Password Encrypted with AES-256-GCM → Encrypted Data Saved to passwords.enc
-```
+When you save a password:
 
-#### 4. Retrieval & Decryption
-```
-User Unlocks App → App Reads passwords.enc → Master Key Decrypts Data → 
-Passwords Displayed in Dashboard
-```
+1. You enter your master key
+2. Altron uses it to encrypt the password
+3. The encrypted version is saved to `passwords.enc`
+4. Your master key is not stored anywhere
 
-![Application Flow](assets/img13.png)
+When you retrieve a password:
 
----
+1. You enter your master key
+2. Altron uses it to decrypt `passwords.enc`
+3. Your passwords become visible
+4. Locking the app clears the master key from memory
 
-## Technology Stack
+![Encrypted Storage Diagram](assets/encrypted-passwords-local.png)
 
-### Frontend Technologies
-
-#### HTML5
-- Semantic markup for accessibility
-- Modern form elements
-- Responsive meta tags
-
-#### CSS3
-- Tailwind CSS for utility-first styling
-- Custom CSS for theme system
-- CSS variables for dynamic theming
-- Flexbox and Grid for layouts
-- Media queries for responsiveness
-
-#### JavaScript (Vanilla ES6+)
-- No framework dependencies
-- Modern async/await patterns
-- Module-based architecture
-- Event-driven programming
-
-### Core APIs
-
-#### 1. Web Crypto API
-```javascript
-// Example: Encrypting a password
-const encoder = new TextEncoder();
-const data = encoder.encode(password);
-const key = await crypto.subtle.importKey(/* ... */);
-const encrypted = await crypto.subtle.encrypt(
-  { name: 'AES-GCM', iv: iv },
-  key,
-  data
-);
-```
-
-**Features Used:**
-- `crypto.getRandomValues()` - Secure random number generation
-- `crypto.subtle.encrypt()` - AES-256-GCM encryption
-- `crypto.subtle.decrypt()` - AES-256-GCM decryption
-- `crypto.subtle.importKey()` - Key derivation
-
-#### 2. File System Access API
-```javascript
-// Example: Selecting directory
-const dirHandle = await window.showDirectoryPicker();
-const fileHandle = await dirHandle.getFileHandle('passwords.enc', { 
-  create: true 
-});
-```
-
-**Features Used:**
-- `showDirectoryPicker()` - Folder selection dialog
-- `getFileHandle()` - File access
-- `createWritable()` - File writing
-- `getFile()` - File reading
-
-#### 3. Clipboard API
-```javascript
-// Example: Copy password
-await navigator.clipboard.writeText(password);
-```
-
-### External Libraries
-
-#### Tailwind CSS (via CDN)
-- Version: Latest
-- Usage: Utility-first CSS framework
-- Benefits: Rapid UI development, consistent styling
-
-#### Font Awesome
-- Version: 6.4.0
-- Usage: Icons throughout the interface
-- Benefits: Professional iconography, wide variety
-
----
-
-## Security Architecture
-
-### Threat Model
-
-#### What We Protect Against:
-✅ Remote server breaches (no server exists)
-✅ Network interception (no network requests)
-✅ Third-party access (no cloud sync)
-✅ Vendor surveillance (open source code)
-✅ Unauthorized local access (encryption at rest)
-
-#### What We Don't Protect Against:
-⚠️ Physical device access (if unlocked)
-⚠️ Keyloggers on compromised system
-⚠️ Master key forgotten by user
-⚠️ Screen recording malware
-⚠️ Browser vulnerabilities
-
-### Encryption Details
-
-#### Algorithm: AES-256-GCM
-
-**Why AES-256-GCM?**
-- **AES-256**: Symmetric encryption, 256-bit key length
-- **GCM Mode**: Galois/Counter Mode provides:
-  - Confidentiality (encryption)
-  - Authenticity (tamper detection)
-  - Integrity (data hasn't changed)
-
-**Encryption Process:**
-```
-1. Master Key (user input)
-   ↓
-2. Key Derivation (SHA-256 hash)
-   ↓
-3. Generate Random IV (Initialization Vector)
-   ↓
-4. Encrypt Password (AES-256-GCM)
-   ↓
-5. Store: IV + Encrypted Data + Auth Tag
-```
-
-**Decryption Process:**
-```
-1. Read: IV + Encrypted Data + Auth Tag
-   ↓
-2. Master Key (user input)
-   ↓
-3. Derive Same Encryption Key
-   ↓
-4. Decrypt with IV (AES-256-GCM)
-   ↓
-5. Verify Auth Tag (ensures no tampering)
-   ↓
-6. Return Decrypted Password
-```
-
-### Security Best Practices
-
-#### Master Key Guidelines
-- Minimum 12 characters recommended
-- Use a passphrase, not a simple password
-- Include mixed characters (upper, lower, numbers, symbols)
-- Never share your master key
-- Don't write it down in plain text
-
-#### Operational Security
-- Lock the application when stepping away
-- Use the app on trusted devices only
-- Keep your browser updated
-- Backup encrypted files regularly
-- Store backups securely
-
----
-
-## User Interface
-
-### Design Philosophy
-
-1. **Simplicity First**: Clean, uncluttered interface
-2. **Security Visible**: Clear indication of security status
-3. **Accessibility**: High contrast, readable fonts
-4. **Responsiveness**: Works on all screen sizes
-5. **Feedback**: Immediate visual feedback for all actions
-
-### UI Components
-
-#### Lock Screen
-![Lock Screen](assets/img14.png)
-
-**Purpose**: Authentication gate
-**Elements**:
-- Master key input field
-- Visibility toggle
-- Storage folder selector
-- Help link
-
-#### Dashboard
-![Dashboard](assets/img15.png)
-
-**Layout**:
-- Top navigation bar (theme, help, lock)
-- Tab system (Create New / Passwords)
-- Content area
-- Footer with links
-
-#### Password Generator Card
-![Generator Card](assets/img16.png)
-
-**Interactive Elements**:
-- Length slider (8-64)
-- Character type checkboxes
-- Generate button
-- Generated password display
-- Strength meter
-
-#### Password List
-![Password List](assets/img17.png)
-
-**Features**:
-- Search bar (real-time filtering)
-- Password entries with labels
-- Action buttons (view, copy, delete)
-- Empty state message
-
-### Responsive Design
-
-#### Breakpoints:
-```css
-/* Mobile */
-@media (max-width: 640px) { /* ... */ }
-
-/* Tablet */
-@media (min-width: 641px) and (max-width: 1024px) { /* ... */ }
-
-/* Desktop */
-@media (min-width: 1025px) { /* ... */ }
-```
-
-#### Mobile Optimizations:
-- Touch-friendly buttons (min 44x44px)
-- Simplified layouts
-- Bottom-sheet modals
-- Swipe gestures support
+This means that without your master key, the file is just meaningless encrypted data. Even if someone copies the file, they cannot read your passwords.
 
 ---
 
 ## Use Cases
 
-### Individual Users
+### Personal Use
 
-#### 1. Personal Password Management
-**Scenario**: Sarah wants to manage passwords for her 50+ online accounts
-**Solution**: 
-- Generate unique passwords for each service
-- Store securely with descriptive labels
-- Quick search to find specific passwords
-- Copy with one click when logging in
+**Managing Multiple Accounts**
 
-#### 2. Privacy-Conscious User
-**Scenario**: Alex doesn't trust cloud services with sensitive data
-**Solution**:
-- All data stays on local device
-- No network transmission
-- Open source for verification
-- Complete control over encryption
+Most people have dozens of online accounts across email, banking, social media, shopping, and entertainment services. Altron helps you:
 
-#### 3. Offline Usage
-**Scenario**: Maria travels frequently with limited internet
-**Solution**:
-- Works completely offline
-- No sync delays or connection issues
-- Generate passwords anywhere
-- Access saved passwords anytime
+- Generate a unique password for each account
+- Store them in one secure location
+- Find specific passwords quickly when logging in
+- Avoid the risk of password reuse
 
-### Developers & Tech Users
+**Privacy-Conscious Users**
 
-#### 4. Development Credentials
-**Scenario**: John manages API keys and test accounts
-**Solution**:
-- Store development credentials securely
-- Organize by project labels
-- Quick access during coding
-- No risk of committing passwords to Git
+If you prefer not to trust cloud services with your sensitive information, Altron offers:
 
-#### 5. Open Source Advocate
-**Scenario**: Emma wants auditable security
-**Solution**:
-- Inspect all source code
-- Verify encryption implementation
-- Contribute improvements
-- Trust through transparency
+- Complete data control
+- No reliance on third-party servers
+- Transparency through open source code
+- Offline functionality
 
-### Small Teams
+**Travel and Limited Connectivity**
 
-#### 6. Shared Device Security
-**Scenario**: Small office with shared workstation
-**Solution**:
+When traveling or in areas with poor internet:
+
+- Access passwords without internet
+- Generate new passwords offline
+- No sync delays or connection errors
+- Full functionality anywhere
+
+### Professional Use
+
+**Developers and Technical Users**
+
+Developers often manage API keys, database credentials, and test accounts. Altron provides:
+
+- Secure storage for development credentials
+- Organization through descriptive labels
+- Quick access during coding sessions
+- No risk of accidentally committing passwords to version control
+
+**Small Teams on Shared Devices**
+
+In small offices or shared workstation environments:
+
 - Each person uses their own master key
-- Lock when stepping away
-- No shared cloud account risks
-- Individual encrypted files
+- Individual encrypted files prevent cross-access
+- Lock function protects passwords when stepping away
+- No shared cloud account vulnerabilities
+
+### Specific Scenarios
+
+**Migrating from a Cloud Service**
+
+If you're leaving a cloud password manager:
+
+- Export your passwords from the old service (usually to CSV)
+- Manually add them to Altron with appropriate labels
+- Delete the export file securely
+- Cancel your subscription
+
+**Setting Up a New Device**
+
+To move your passwords to a new computer:
+
+- Copy the `passwords.enc` file to the new device
+- Open Altron and select the folder containing the file
+- Enter your master key
+- All passwords are now accessible on the new device
+
+**Backing Up Your Passwords**
+
+To protect against device failure:
+
+- Copy `passwords.enc` to an external drive or secure cloud storage
+- The file remains encrypted and requires your master key
+- Regular backups ensure you won't lose access
+- Store backups in locations you control
 
 ---
 
-## Browser Compatibility
+## User Experience Details
+
+### Design Philosophy
+
+Altron's interface focuses on three goals:
+
+1. **Clarity**: Every element serves a clear purpose
+2. **Efficiency**: Common tasks require minimal steps
+3. **Security Visibility**: You always know the security state
+
+### Navigation Flow
+
+The application follows a simple structure:
+
+```
+Lock Screen
+    ↓
+Dashboard
+    ├── Create New (Password Generator)
+    └── Passwords (List and Management)
+```
+
+All functions are accessible within two clicks from the dashboard.
+
+### Visual Feedback
+
+The interface provides immediate feedback for actions:
+
+- Password strength updates as you adjust settings
+- Search filters results in real-time
+- Copy action shows brief confirmation
+- Delete requires confirmation to prevent accidents
+- Theme changes apply instantly
+
+### Error Prevention
+
+Altron helps prevent common mistakes:
+
+- Confirmation dialogs before deleting passwords
+- Visual indication when passwords are shown vs hidden
+- Clear status of locked vs unlocked state
+- Guidance text on the lock screen
+
+### Accessibility Considerations
+
+The design accommodates different user needs:
+
+- High contrast ratios in all themes
+- Readable font sizes
+- Clickable areas sized for easy selection
+- Keyboard navigation support
+- Clear visual hierarchy
+
+---
+
+## Browser Requirements
+
+Altron requires specific browser capabilities that are not universally available.
 
 ### Supported Browsers
 
-| Browser | Version | Support Level | Notes |
-|---------|---------|---------------|-------|
-| Chrome | 86+ | ✅ Full | Recommended |
-| Edge | 86+ | ✅ Full | Recommended |
-| Firefox | N/A | ❌ Limited | No File System Access API |
-| Safari | N/A | ❌ Limited | No File System Access API |
-| Opera | 72+ | ⚠️ Partial | Based on Chromium |
+**Fully Supported:**
+- Google Chrome (version 86 and later)
+- Microsoft Edge (version 86 and later)
 
-### Required Features
+**Not Currently Supported:**
+- Mozilla Firefox
+- Apple Safari
+- Opera (limited support)
 
-#### File System Access API
-**Status**: Available in Chrome/Edge only
-**Why Required**: Direct file system access for local storage
-**Alternative**: Manual file upload/download (not implemented)
+### Why These Limitations?
 
-#### Web Crypto API
-**Status**: Widely supported
-**Why Required**: Secure encryption and random generation
-**Fallback**: None (core security requirement)
+Altron uses the File System Access API, which allows direct access to files on your computer. This API is currently only implemented in Chrome and Edge.
 
-#### Clipboard API
-**Status**: Widely supported
-**Why Required**: Copy password functionality
-**Fallback**: Manual selection
+Without this API, the app would need to use file upload/download dialogs for every save and load operation, significantly degrading the user experience.
 
-### Feature Detection
+### Checking Compatibility
 
-The app checks for required APIs on load:
-```javascript
-if (!('showDirectoryPicker' in window)) {
-  alert('File System Access API not supported. Please use Chrome or Edge.');
-}
-```
+When you open Altron in an unsupported browser, you'll see a message explaining the limitation and suggesting an alternative browser.
 
 ---
 
-## Performance
+## Security Considerations
 
-### Optimization Strategies
+### What Altron Protects Against
 
-#### 1. Minimal Dependencies
-- No heavy frameworks (React, Vue, Angular)
-- Only essential external libraries (Tailwind, Font Awesome via CDN)
-- Total bundle size: < 100KB
+**External Threats:**
+- Remote server breaches (no server exists)
+- Network interception (no data transmission)
+- Cloud service compromises (no cloud storage)
+- Third-party access (everything local)
 
-#### 2. Lazy Loading
-- Themes loaded on demand
-- Modals rendered when needed
-- Images optimized and compressed
+**Data Safety:**
+- Passwords encrypted at rest
+- Master key never stored
+- No recovery backdoors
+- Open source for audit
 
-#### 3. Efficient Encryption
-- Passwords encrypted individually (not entire file)
-- Async operations prevent UI blocking
-- Web Worker support (future enhancement)
+### What Altron Cannot Protect Against
 
-#### 4. Local Storage
-- No network latency
-- Instant read/write operations
-- No bandwidth consumption
+**Device-Level Threats:**
+- Physical access to an unlocked device
+- Keyloggers or screen recording malware
+- Compromised operating system
+- Browser vulnerabilities
 
-### Performance Metrics
+**User Responsibility:**
+- Forgetting your master key means permanent data loss
+- Weak master keys reduce security
+- Leaving the app unlocked creates risk
+- Not backing up means potential data loss
 
-| Metric | Value | Target |
-|--------|-------|--------|
-| Initial Load | < 1s | ✅ |
-| Password Generation | < 100ms | ✅ |
-| Encryption | < 200ms | ✅ |
-| Decryption | < 200ms | ✅ |
-| Search Filter | < 50ms | ✅ |
-| Theme Switch | < 100ms | ✅ |
+### Best Practices
 
----
+To maximize security while using Altron:
 
-## Future Roadmap
-
-### Version 1.1 (Q1 2025)
-
-#### Bug Fixes
-- [ ] Auto-refresh password list after save
-- [ ] Restrict to single master key per session
-- [ ] Single storage folder per session
-
-#### UI/UX Improvements
-- [ ] Improve Neon theme contrast
-- [ ] Improve Monokai theme readability
-- [ ] Add password strength indicator during typing
-- [ ] Keyboard shortcuts support
-
-### Version 1.2 (Q2 2025)
-
-#### New Features
-- [ ] Password export (encrypted JSON)
-- [ ] Password import from other managers
-- [ ] Password categories/folders
-- [ ] Favorite passwords (pinning)
-- [ ] Custom password templates
-
-### Version 2.0 (Q3 2025)
-
-#### Major Features
-- [ ] Browser extension for auto-fill
-- [ ] Password history tracking
-- [ ] Breach detection (Have I Been Pwned integration)
-- [ ] Two-factor authentication codes (TOTP)
-- [ ] Secure notes storage
-
-### Long-term Vision
-
-#### Beyond 2025
-- [ ] Mobile app (with local storage)
-- [ ] Optional encrypted cloud backup
-- [ ] Password sharing (encrypted)
-- [ ] Biometric unlock support
-- [ ] Multiple vaults support
-- [ ] Advanced password analytics
+1. **Choose a strong master key**: Use a passphrase of at least 12 characters
+2. **Lock when away**: Always lock before leaving your device
+3. **Keep software updated**: Use the latest browser version
+4. **Back up regularly**: Copy `passwords.enc` to secure storage
+5. **Use trusted devices**: Only install on devices you control
+6. **Never share your master key**: It's the only protection
 
 ---
 
-## Comparison with Competitors
+## Frequently Asked Questions
 
-### Altron vs Cloud Password Managers
+**Can I sync passwords across devices?**
 
-| Feature | Altron | LastPass | 1Password | Bitwarden |
-|---------|--------|----------|-----------|-----------|
-| **Cost** | Free | $3/mo | $3/mo | Free (limited) |
-| **Privacy** | 100% Local | Cloud-based | Cloud-based | Cloud-based |
-| **Open Source** | ✅ Yes | ❌ No | ❌ No | ✅ Yes |
-| **Offline Access** | ✅ Full | ⚠️ Limited | ⚠️ Limited | ⚠️ Limited |
-| **Encryption** | AES-256-GCM | AES-256 | AES-256 | AES-256-CBC |
-| **Cross-device Sync** | ❌ No | ✅ Yes | ✅ Yes | ✅ Yes |
-| **Browser Extension** | ❌ No | ✅ Yes | ✅ Yes | ✅ Yes |
-| **Mobile App** | ❌ No | ✅ Yes | ✅ Yes | ✅ Yes |
-| **Zero-Knowledge** | ✅ True | ✅ Yes | ✅ Yes | ✅ Yes |
-| **Setup Required** | None | Account | Account | Account |
+No. Altron is designed for single-device use. You can manually copy the encrypted file to other devices, but there is no automatic sync.
 
-### Target Users
+**What happens if I forget my master key?**
 
-**Choose Altron if you:**
-- ✅ Value privacy over convenience
-- ✅ Want complete control of your data
-- ✅ Prefer open-source solutions
-- ✅ Don't need cross-device sync
-- ✅ Want zero-cost solution
+Your passwords cannot be recovered. This is intentional—any recovery mechanism would weaken security. Choose a master key you can remember.
 
-**Choose Cloud Managers if you:**
-- Need automatic sync across devices
-- Want mobile apps
-- Require browser auto-fill
+**Can I export my passwords?**
+
+Currently, you can only access passwords through the Altron interface. Export functionality is planned for a future update.
+
+**Is my data backed up automatically?**
+
+No. You are responsible for backing up the `passwords.enc` file. Since it's encrypted, you can store it wherever you keep important files.
+
+**How do I uninstall Altron?**
+
+Simply close the application and delete its files. Your `passwords.enc` file will remain wherever you chose to store it unless you delete it separately.
+
+**Can I use Altron on mobile?**
+
+Not currently. The File System Access API is not available on mobile browsers. A mobile version is being considered for future development.
+
+**Is Altron as secure as commercial password managers?**
+
+Altron uses the same encryption standard (AES-256) as commercial options. The main difference is that commercial managers offer additional features like sync, browser extensions, and breach monitoring.
+
+---
+
+## Limitations and Trade-offs
+
+Altron makes specific trade-offs to maintain its privacy-first approach:
+
+### What's Missing Compared to Cloud Services
+
+**No Cross-Device Sync**: Your passwords are on one device only
+**No Browser Auto-Fill**: You must copy and paste passwords manually
+**No Mobile App**: Currently desktop-only
+**No Password Sharing**: Cannot share passwords with others
+**No Account Recovery**: Forgetting your master key means data loss
+**No Breach Monitoring**: Does not check if passwords appear in known breaches
+
+### Why These Limitations Exist
+
+Each missing feature would require either:
+- Sending data to external servers (violates privacy commitment)
+- Creating account systems (adds attack surface)
+- Implementing complex sync protocols (increases code complexity)
+
+Altron prioritizes simplicity and privacy over feature completeness.
+
+### Who Should Use Altron
+
+Altron is well-suited for users who:
+- Value privacy over convenience
+- Primarily use one computer
+- Are comfortable with manual processes
+- Want full control of their data
+- Prefer open source software
+- Don't want subscription fees
+
+### Who Should Consider Alternatives
+
+You may prefer a cloud password manager if you:
+- Need passwords on multiple devices
+- Want automatic browser integration
+- Require mobile access
 - Share passwords with team members
+- Want comprehensive support services
+- Need breach monitoring
 
 ---
 
-## Contributing
+## Comparison with Other Solutions
 
-We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+### Altron vs. Cloud Password Managers
 
-### Areas for Contribution
-- 🐛 Bug fixes
-- ✨ New features
-- 🎨 UI/UX improvements
-- 📖 Documentation
-- 🌐 Translations
-- 🧪 Testing
+**Similarities:**
+- Strong encryption (AES-256)
+- Password generation
+- Secure storage
+- Master key protection
+
+**Key Differences:**
+- **Storage Location**: Altron keeps everything local; others use cloud servers
+- **Cost**: Altron is free; others typically charge $3-10/month
+- **Sync**: Others sync automatically; Altron requires manual file copying
+- **Convenience**: Others offer browser extensions; Altron requires copy/paste
+- **Trust Model**: Altron trusts your device security; others trust their infrastructure
+
+### Altron vs. Browser Built-in Password Managers
+
+**Altron Advantages:**
+- Stronger encryption
+- Not tied to browser vendor
+- Open source code
+- Works across different browsers
+- More control over backup
+
+**Browser Manager Advantages:**
+- Automatic integration
+- No separate application
+- Easier to use
+- Often includes sync
+- Pre-installed
+
+### Altron vs. Encrypted Text Files
+
+Some users store passwords in encrypted text files or documents.
+
+**Altron Advantages:**
+- Purpose-built interface
+- Password generation
+- Search functionality
+- Organized structure
+- Better encryption implementation
+
+**Encrypted File Advantages:**
+- Works with any encryption tool
+- Simpler concept
+- More portable
+- No specific software required
 
 ---
 
-## License
+## Future Direction
 
-Altron is open source software licensed under the [MIT License](LICENSE).
+Altron is actively developed with planned improvements based on user needs.
+
+### Short-Term Plans (Next Few Months)
+
+- Bug fixes for refresh issues
+- Improved theme contrast and readability
+- Keyboard shortcut support
+- Password import from other managers
+- Export functionality
+
+### Medium-Term Plans (6-12 Months)
+
+- Browser extension for auto-fill
+- Password categories and folders
+- Password strength analysis
+- Breach detection integration
+- Secure notes storage
+
+### Long-Term Possibilities
+
+These features are being considered but not confirmed:
+
+- Mobile application
+- Optional encrypted cloud backup
+- Password sharing capabilities
+- Multiple vault support
+- Advanced security analytics
+
+All future features will maintain the core commitment to local storage and user privacy.
 
 ---
 
-## Acknowledgments
+## Getting Help
 
-Built with ❤️ for privacy-conscious users everywhere.
+### Documentation
 
-**Technologies & Inspirations:**
-- Web Crypto API documentation by MDN
-- File System Access API by Google Chrome
-- Tailwind CSS framework
-- Font Awesome icons
-- Open source password manager community
+This document covers the essential product information. For technical details, see the full documentation included with the project.
+
+### Reporting Issues
+
+If you encounter bugs or have feature requests:
+
+1. Check existing issues on the project repository
+2. Provide clear description and steps to reproduce
+3. Include browser version and operating system
+4. Note any error messages
+
+### Community
+
+Users can discuss Altron, share tips, and help each other through the project's discussion forums.
 
 ---
 
-## Support
+## License and Credits
 
-- 📖 [Documentation](README.md)
-- 🐛 [Report Issues](https://github.com/srsdesigndev/altron/issues)
-- 💬 [Discussions](https://github.com/srsdesigndev/altron/discussions)
-- ⭐ [Star on GitHub](https://github.com/srsdesigndev/altron)
+Altron is open source software released under the MIT License. This means you can use, modify, and distribute it freely.
+
+The project uses several open source technologies:
+- Web Crypto API for encryption
+- File System Access API for storage
+- Tailwind CSS for styling
+- Font Awesome for icons
+
+All credit to the developers and maintainers of these projects.
 
 ---
 
+**Document Version**: 1.0  
 **Last Updated**: November 2025  
-**Version**: 1.0.0  
-**Maintained by**: [@srsdesigndev](https://github.com/srsdesigndev)
+**Product Version**: 1.0.0
