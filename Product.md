@@ -2,539 +2,332 @@
 
 ## What is Altron?
 
-Altron is a local password manager that stores your passwords on your device rather than in the cloud. It uses encryption to keep your passwords secure and requires no account creation or subscription.
+Altron is a password manager that keeps your passwords on your computer instead of in the cloud. It's free, works offline, and doesn't require an account.
 
 ![Altron Landing Page](assets/landing-hero.png)
 
-### Core Principles
-
-- **Local Storage**: Your passwords never leave your device
-- **Free to Use**: No subscription fees or premium tiers
-- **Open Source**: Code is publicly available for review
-- **Offline Capable**: Works without an internet connection
-- **Privacy First**: No data collection or tracking
-
 ---
 
-## Getting Started
+## Features
 
-### First Time Setup
+![Landing Features](assets/landing-features.png)
 
-When you open Altron, you'll need to:
+### Password Generator
 
-1. **Select a folder** on your computer where passwords will be stored
-2. **Create a master key** that will encrypt your passwords
-3. **Grant permission** for the app to access the folder you selected
-
-![Storage and Master Key Setup](assets/storage-and-master-key-auth.png)
-
-The master key is the only thing standing between your passwords and anyone who accesses your device. Choose something memorable but difficult to guess.
-
-**Important**: If you forget your master key, your passwords cannot be recovered. This is by design for maximum security.
-
-### Understanding the Interface
-
-Once unlocked, Altron opens to a simple dashboard with two main sections:
-
-![Dashboard View](assets/generate-form.png)
-
-**Create New**: Generate and save new passwords
-
-**Passwords**: View, search, and manage saved passwords
-
----
-
-## Core Features
-
-### Password Generation
-
-Altron helps you create strong, random passwords rather than reusing weak ones.
+Create strong, random passwords instantly.
 
 ![Password Generator](assets/generate-action.png)
 
-#### What You Can Control
-
-- **Length**: Choose between 8 and 64 characters
-- **Character Types**: Mix uppercase, lowercase, numbers, and symbols
-- **Strength Indicator**: See how strong your password is in real-time
-
-The generator uses your browser's cryptographic functions to create truly random passwords. Once generated, you can copy it immediately or save it with a label for future reference.
+- Choose password length (8-64 characters)
+- Pick which characters to include (letters, numbers, symbols)
+- See password strength as you adjust settings
+- Generate with one click
 
 ![Save Password Form](assets/password-save-form.png)
 
-### Managing Your Passwords
+After generating, save it with a label like "Netflix" or "Bank Account" so you can find it later.
 
-Your saved passwords appear in a searchable list. Each entry shows the label you assigned and when it was created.
+---
+
+### Password Storage
+
+All your passwords in one place, searchable and organized.
 
 ![Password List](assets/password-lists.png)
 
-#### Available Actions
-
-- **Search**: Filter passwords by typing in the search box
-- **View**: Click to see the full password
-- **Copy**: Copy password to clipboard with one click
-- **Delete**: Remove passwords you no longer need
+- Search by typing the label
+- Click to view any saved password
+- Copy to clipboard with one click
+- Delete passwords you don't need anymore
 
 ![View Password Options](assets/view-or-copy-password.png)
 
-Passwords are hidden by default. Click the eye icon to reveal them when needed.
+Passwords stay hidden until you click to reveal them.
 
-### Themes
+---
 
-Choose from six color schemes to match your preference. Your selection is remembered between sessions.
+### Master Key
 
-![Available Themes](assets/themes-available.png)
+One password protects everything.
 
-Themes include Light, Dark, VS Code Dark, Monokai, Solarized Dark, and Neon.
+![Storage and Master Key Setup](assets/storage-and-master-key-auth.png)
 
-![Theme Selector](assets/themes-dropdown.png)
-
-### Locking the Application
-
-When you step away from your computer, lock Altron to prevent unauthorized access.
+- Create a master key when you first open Altron
+- Use it to unlock your passwords each time
+- Lock the app when you step away
 
 ![Lock Screen](assets/lock-account.png)
 
-Click the lock icon in the top right corner. You'll need to enter your master key again to regain access.
+Your master key is never saved anywhere - only you know it.
+
+---
+
+### Themes
+
+Choose the look you prefer.
+
+![Available Themes](assets/themes-available.png)
+
+Six color options: Light, Dark, VS Code Dark, Monokai, Solarized Dark, and Neon.
+
+![Theme Selector](assets/themes-dropdown.png)
+
+Your choice is remembered next time you open Altron.
+
+---
+
+### Help
+
+Guidance when you need it.
+
+![Help Documentation](assets/help-docs.png)
+
+![Help Trigger](assets/help-trigger.png)
+
+![Help Modal](assets/help-modal-main.png)
+
+Built-in help explains features and best practices.
 
 ---
 
 ## How It Works
 
-### The File System
+![Landing How It Works](assets/landing-how-it-works.png)
 
-Altron creates a single file called `passwords.enc` in the folder you selected during setup. This file contains all your encrypted passwords.
+1. **Select a folder** on your computer where passwords will be saved
+2. **Create a master key** that encrypts your passwords
+3. **Generate and save** passwords as you need them
+4. **Search and copy** when logging into websites
 
 ![File Access Permission](assets/allow-file-access.png)
 
-The file is saved automatically whenever you add or remove a password. You don't need to manually save or export anything.
-
-### Encryption Explained Simply
-
-When you save a password:
-
-1. You enter your master key
-2. Altron uses it to encrypt the password
-3. The encrypted version is saved to `passwords.enc`
-4. Your master key is not stored anywhere
-
-When you retrieve a password:
-
-1. You enter your master key
-2. Altron uses it to decrypt `passwords.enc`
-3. Your passwords become visible
-4. Locking the app clears the master key from memory
+Your browser asks permission once to access the folder you chose.
 
 ![Encrypted Storage Diagram](assets/encrypted-passwords-local.png)
 
-This means that without your master key, the file is just meaningless encrypted data. Even if someone copies the file, they cannot read your passwords.
+Everything is encrypted and stored locally - nothing goes online.
 
 ---
 
 ## Use Cases
 
-### Personal Use
+### For Personal Use
 
-**Managing Multiple Accounts**
+**Situation:** You have accounts on 50+ websites and struggle to remember unique passwords for each.
 
-Most people have dozens of online accounts across email, banking, social media, shopping, and entertainment services. Altron helps you:
+**With Altron:**
+- Generate a unique password for every account
+- Label each one clearly ("Amazon", "Work Email", "Gym Membership")
+- Search when you need to log in
+- Copy and paste the password
 
-- Generate a unique password for each account
-- Store them in one secure location
-- Find specific passwords quickly when logging in
-- Avoid the risk of password reuse
-
-**Privacy-Conscious Users**
-
-If you prefer not to trust cloud services with your sensitive information, Altron offers:
-
-- Complete data control
-- No reliance on third-party servers
-- Transparency through open source code
-- Offline functionality
-
-**Travel and Limited Connectivity**
-
-When traveling or in areas with poor internet:
-
-- Access passwords without internet
-- Generate new passwords offline
-- No sync delays or connection errors
-- Full functionality anywhere
-
-### Professional Use
-
-**Developers and Technical Users**
-
-Developers often manage API keys, database credentials, and test accounts. Altron provides:
-
-- Secure storage for development credentials
-- Organization through descriptive labels
-- Quick access during coding sessions
-- No risk of accidentally committing passwords to version control
-
-**Small Teams on Shared Devices**
-
-In small offices or shared workstation environments:
-
-- Each person uses their own master key
-- Individual encrypted files prevent cross-access
-- Lock function protects passwords when stepping away
-- No shared cloud account vulnerabilities
-
-### Specific Scenarios
-
-**Migrating from a Cloud Service**
-
-If you're leaving a cloud password manager:
-
-- Export your passwords from the old service (usually to CSV)
-- Manually add them to Altron with appropriate labels
-- Delete the export file securely
-- Cancel your subscription
-
-**Setting Up a New Device**
-
-To move your passwords to a new computer:
-
-- Copy the `passwords.enc` file to the new device
-- Open Altron and select the folder containing the file
-- Enter your master key
-- All passwords are now accessible on the new device
-
-**Backing Up Your Passwords**
-
-To protect against device failure:
-
-- Copy `passwords.enc` to an external drive or secure cloud storage
-- The file remains encrypted and requires your master key
-- Regular backups ensure you won't lose access
-- Store backups in locations you control
+**Result:** Every account has a strong, unique password you don't need to memorize.
 
 ---
 
-## User Experience Details
+### For Privacy-Focused Users
 
-### Design Philosophy
+**Situation:** You don't trust cloud services with your sensitive data.
 
-Altron's interface focuses on three goals:
+**With Altron:**
+- All passwords stay on your computer
+- Nothing is sent to any server
+- No account registration required
+- You control your data completely
 
-1. **Clarity**: Every element serves a clear purpose
-2. **Efficiency**: Common tasks require minimal steps
-3. **Security Visibility**: You always know the security state
-
-### Navigation Flow
-
-The application follows a simple structure:
-
-```
-Lock Screen
-    ↓
-Dashboard
-    ├── Create New (Password Generator)
-    └── Passwords (List and Management)
-```
-
-All functions are accessible within two clicks from the dashboard.
-
-### Visual Feedback
-
-The interface provides immediate feedback for actions:
-
-- Password strength updates as you adjust settings
-- Search filters results in real-time
-- Copy action shows brief confirmation
-- Delete requires confirmation to prevent accidents
-- Theme changes apply instantly
-
-### Error Prevention
-
-Altron helps prevent common mistakes:
-
-- Confirmation dialogs before deleting passwords
-- Visual indication when passwords are shown vs hidden
-- Clear status of locked vs unlocked state
-- Guidance text on the lock screen
-
-### Accessibility Considerations
-
-The design accommodates different user needs:
-
-- High contrast ratios in all themes
-- Readable font sizes
-- Clickable areas sized for easy selection
-- Keyboard navigation support
-- Clear visual hierarchy
+**Result:** Complete privacy and control over your passwords.
 
 ---
 
-## Browser Requirements
+### For Offline Access
 
-Altron requires specific browser capabilities that are not universally available.
+**Situation:** You travel frequently or work in places with poor internet.
 
-### Supported Browsers
+**With Altron:**
+- Works without internet connection
+- Generate passwords offline
+- Access saved passwords anytime
+- No sync delays or connection issues
 
-**Fully Supported:**
-- Google Chrome (version 86 and later)
-- Microsoft Edge (version 86 and later)
-
-**Not Currently Supported:**
-- Mozilla Firefox
-- Apple Safari
-- Opera (limited support)
-
-### Why These Limitations?
-
-Altron uses the File System Access API, which allows direct access to files on your computer. This API is currently only implemented in Chrome and Edge.
-
-Without this API, the app would need to use file upload/download dialogs for every save and load operation, significantly degrading the user experience.
-
-### Checking Compatibility
-
-When you open Altron in an unsupported browser, you'll see a message explaining the limitation and suggesting an alternative browser.
+**Result:** Full functionality regardless of connectivity.
 
 ---
 
-## Security Considerations
+### For Developers
 
-### What Altron Protects Against
+**Situation:** You manage API keys, database passwords, and test account credentials.
 
-**External Threats:**
-- Remote server breaches (no server exists)
-- Network interception (no data transmission)
-- Cloud service compromises (no cloud storage)
-- Third-party access (everything local)
+**With Altron:**
+- Store all development credentials
+- Organize by project name
+- Quick search and copy while coding
+- Keep sensitive keys off the cloud
 
-**Data Safety:**
-- Passwords encrypted at rest
-- Master key never stored
-- No recovery backdoors
-- Open source for audit
+**Result:** Organized credential management without security risks.
 
-### What Altron Cannot Protect Against
+---
 
-**Device-Level Threats:**
-- Physical access to an unlocked device
-- Keyloggers or screen recording malware
-- Compromised operating system
-- Browser vulnerabilities
+### For Shared Computers
 
-**User Responsibility:**
-- Forgetting your master key means permanent data loss
-- Weak master keys reduce security
-- Leaving the app unlocked creates risk
-- Not backing up means potential data loss
+**Situation:** Multiple people use the same workstation at a small office.
 
-### Best Practices
+**With Altron:**
+- Each person has their own encrypted file
+- Individual master keys keep passwords separate
+- Lock when leaving your desk
+- No shared account vulnerabilities
 
-To maximize security while using Altron:
+**Result:** Personal password security on shared devices.
 
-1. **Choose a strong master key**: Use a passphrase of at least 12 characters
-2. **Lock when away**: Always lock before leaving your device
-3. **Keep software updated**: Use the latest browser version
-4. **Back up regularly**: Copy `passwords.enc` to secure storage
-5. **Use trusted devices**: Only install on devices you control
-6. **Never share your master key**: It's the only protection
+---
+
+## Benefits
+
+### Privacy
+- Your passwords never leave your computer
+- No company has access to your data
+- No tracking or data collection
+- Complete anonymity
+
+### Security
+- Strong encryption protects your passwords
+- Only you have the master key
+- No password recovery means no security backdoor
+- Open source code you can verify
+
+### Simplicity
+- No account setup required
+- No subscription fees
+- Clean, simple interface
+- Works offline
+
+### Control
+- You own your password file
+- Choose where to store it
+- Back it up how you want
+- No vendor lock-in
 
 ---
 
 ## Frequently Asked Questions
 
-**Can I sync passwords across devices?**
+![Landing FAQs](assets/landing-faqs.png)
 
-No. Altron is designed for single-device use. You can manually copy the encrypted file to other devices, but there is no automatic sync.
+**Can I use Altron on my phone?**  
+No, it only works on computers with Chrome or Edge browser.
 
-**What happens if I forget my master key?**
+**What if I forget my master key?**  
+Your passwords cannot be recovered. This is by design for security.
 
-Your passwords cannot be recovered. This is intentional—any recovery mechanism would weaken security. Choose a master key you can remember.
+**Can I sync between devices?**  
+No automatic sync. You can manually copy the encrypted file between computers.
 
-**Can I export my passwords?**
+**Does it work offline?**  
+Yes, completely. No internet needed.
 
-Currently, you can only access passwords through the Altron interface. Export functionality is planned for a future update.
+**How much does it cost?**  
+Free. No subscription or premium version.
 
-**Is my data backed up automatically?**
-
-No. You are responsible for backing up the `passwords.enc` file. Since it's encrypted, you can store it wherever you keep important files.
-
-**How do I uninstall Altron?**
-
-Simply close the application and delete its files. Your `passwords.enc` file will remain wherever you chose to store it unless you delete it separately.
-
-**Can I use Altron on mobile?**
-
-Not currently. The File System Access API is not available on mobile browsers. A mobile version is being considered for future development.
-
-**Is Altron as secure as commercial password managers?**
-
-Altron uses the same encryption standard (AES-256) as commercial options. The main difference is that commercial managers offer additional features like sync, browser extensions, and breach monitoring.
+**Can others access my passwords?**  
+Only if they have physical access to your computer and know your master key.
 
 ---
 
-## Limitations and Trade-offs
+## Product Comparison
 
-Altron makes specific trade-offs to maintain its privacy-first approach:
+### Altron vs Cloud Password Managers
 
-### What's Missing Compared to Cloud Services
+**Altron:**
+- ✅ Free forever
+- ✅ Complete privacy
+- ✅ Works offline
+- ✅ No account needed
+- ❌ No sync across devices
+- ❌ No auto-fill in browsers
+- ❌ No mobile app
 
-**No Cross-Device Sync**: Your passwords are on one device only
-**No Browser Auto-Fill**: You must copy and paste passwords manually
-**No Mobile App**: Currently desktop-only
-**No Password Sharing**: Cannot share passwords with others
-**No Account Recovery**: Forgetting your master key means data loss
-**No Breach Monitoring**: Does not check if passwords appear in known breaches
+**Cloud Services (LastPass, 1Password, Bitwarden):**
+- ❌ Subscription fees
+- ❌ Data on company servers
+- ❌ Needs internet
+- ❌ Account required
+- ✅ Syncs everywhere
+- ✅ Auto-fill support
+- ✅ Mobile apps
 
-### Why These Limitations Exist
-
-Each missing feature would require either:
-- Sending data to external servers (violates privacy commitment)
-- Creating account systems (adds attack surface)
-- Implementing complex sync protocols (increases code complexity)
-
-Altron prioritizes simplicity and privacy over feature completeness.
-
-### Who Should Use Altron
-
-Altron is well-suited for users who:
-- Value privacy over convenience
-- Primarily use one computer
-- Are comfortable with manual processes
-- Want full control of their data
-- Prefer open source software
-- Don't want subscription fees
-
-### Who Should Consider Alternatives
-
-You may prefer a cloud password manager if you:
-- Need passwords on multiple devices
-- Want automatic browser integration
-- Require mobile access
-- Share passwords with team members
-- Want comprehensive support services
-- Need breach monitoring
+**Choose Altron if:** Privacy matters more than convenience  
+**Choose cloud services if:** You need multi-device access
 
 ---
 
-## Comparison with Other Solutions
+### Altron vs Browser Password Managers
 
-### Altron vs. Cloud Password Managers
+**Altron:**
+- ✅ Stronger encryption
+- ✅ Works across all browsers
+- ✅ Password generator
+- ✅ Open source
+- ❌ Manual copy/paste
 
-**Similarities:**
-- Strong encryption (AES-256)
-- Password generation
-- Secure storage
-- Master key protection
+**Browser Managers (Chrome, Firefox, Safari):**
+- ❌ Tied to one browser
+- ❌ Less control
+- ❌ Weaker security
+- ✅ Auto-fill built in
+- ✅ Simpler to use
 
-**Key Differences:**
-- **Storage Location**: Altron keeps everything local; others use cloud servers
-- **Cost**: Altron is free; others typically charge $3-10/month
-- **Sync**: Others sync automatically; Altron requires manual file copying
-- **Convenience**: Others offer browser extensions; Altron requires copy/paste
-- **Trust Model**: Altron trusts your device security; others trust their infrastructure
-
-### Altron vs. Browser Built-in Password Managers
-
-**Altron Advantages:**
-- Stronger encryption
-- Not tied to browser vendor
-- Open source code
-- Works across different browsers
-- More control over backup
-
-**Browser Manager Advantages:**
-- Automatic integration
-- No separate application
-- Easier to use
-- Often includes sync
-- Pre-installed
-
-### Altron vs. Encrypted Text Files
-
-Some users store passwords in encrypted text files or documents.
-
-**Altron Advantages:**
-- Purpose-built interface
-- Password generation
-- Search functionality
-- Organized structure
-- Better encryption implementation
-
-**Encrypted File Advantages:**
-- Works with any encryption tool
-- Simpler concept
-- More portable
-- No specific software required
+**Choose Altron if:** You want proper security and control  
+**Choose browser if:** Simple built-in solution is enough
 
 ---
 
-## Future Direction
+## Limitations
 
-Altron is actively developed with planned improvements based on user needs.
+**What Altron Doesn't Do:**
+- Sync across devices
+- Auto-fill passwords in browsers
+- Work on mobile phones
+- Share passwords with others
+- Import from other password managers
+- Recover forgotten master keys
 
-### Short-Term Plans (Next Few Months)
-
-- Bug fixes for refresh issues
-- Improved theme contrast and readability
-- Keyboard shortcut support
-- Password import from other managers
-- Export functionality
-
-### Medium-Term Plans (6-12 Months)
-
-- Browser extension for auto-fill
-- Password categories and folders
-- Password strength analysis
-- Breach detection integration
-- Secure notes storage
-
-### Long-Term Possibilities
-
-These features are being considered but not confirmed:
-
-- Mobile application
-- Optional encrypted cloud backup
-- Password sharing capabilities
-- Multiple vault support
-- Advanced security analytics
-
-All future features will maintain the core commitment to local storage and user privacy.
+**Why These Limitations Exist:**
+These features would require cloud services, which would compromise the privacy-first design.
 
 ---
 
-## Getting Help
+## Getting Started
 
-### Documentation
+1. Open Altron in Chrome or Edge
+2. Select a folder to store your passwords
+3. Create a master key
+4. Start generating and saving passwords
 
-This document covers the essential product information. For technical details, see the full documentation included with the project.
-
-### Reporting Issues
-
-If you encounter bugs or have feature requests:
-
-1. Check existing issues on the project repository
-2. Provide clear description and steps to reproduce
-3. Include browser version and operating system
-4. Note any error messages
-
-### Community
-
-Users can discuss Altron, share tips, and help each other through the project's discussion forums.
+It takes about 30 seconds to set up.
 
 ---
 
-## License and Credits
+## Summary
 
-Altron is open source software released under the MIT License. This means you can use, modify, and distribute it freely.
+Altron is for people who want a simple, private way to manage passwords without cloud services. It trades convenience features like sync and auto-fill for complete privacy and offline functionality.
 
-The project uses several open source technologies:
-- Web Crypto API for encryption
-- File System Access API for storage
-- Tailwind CSS for styling
-- Font Awesome for icons
+**Best for:**
+- Privacy-focused users
+- Single-device use
+- Offline scenarios
+- Simple password management
 
-All credit to the developers and maintainers of these projects.
+**Not for:**
+- Multi-device synchronization
+- Browser auto-fill
+- Mobile access
+- Team password sharing
+
+The product is intentionally simple: generate strong passwords, store them securely on your computer, and access them when needed. Nothing more, nothing less.
 
 ---
 
-**Document Version**: 1.0  
-**Last Updated**: November 2025  
-**Product Version**: 1.0.0
+**Version:** 1.0.0  
+**License:** MIT (Open Source)  
+**Platform:** Chrome/Edge Browser  
+**Cost:** Free
