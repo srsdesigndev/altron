@@ -1,4 +1,9 @@
-# 🛡️ Altron - Local Password Manager
+## What is Altron?
+
+Altron is a password manager that keeps your passwords on your computer instead of in the cloud. It's free, works offline, and doesn't require an account.
+
+![Altron Landing Page](assets/landing-hero.png)
+
 
 **Your Passwords, 100% Local & Secure**
 
