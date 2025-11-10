@@ -15,7 +15,207 @@
     <div id="loadingOverlay" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
         <div class="w-12 h-12 border-4 border-gray-300 border-t-blue-500 rounded-full animate-spin"></div>
     </div>
-    <!-- Help Modal -->
+
+    <!-- ============================================ -->
+    <!-- ONBOARDING MODAL -->
+    <!-- ============================================ -->
+    <div id="onboardingModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-secondary rounded-xl shadow-2xl max-w-lg w-full overflow-hidden">
+            
+            <!-- Welcome Screen -->
+            <div id="onboardingWelcome" class="p-8 text-center">
+                <div class="mb-6">
+                    <i class="fas fa-shield-alt text-6xl accent-color"></i>
+                </div>
+                <h1 class="text-3xl font-bold text-primary mb-4">Welcome to Altron!</h1>
+                <p class="text-secondary text-lg mb-8">
+                    Hello! Are you ready to secure your passwords locally?<br>
+                    You can remember them safely without losing them.
+                </p>
+                <button onclick="startOnboarding()"
+                    class="w-full bg-accent text-white px-6 py-3 rounded-lg hover:bg-accent-hover transition text-lg font-semibold mb-3">
+                    Create a New Account
+                </button>
+                <button onclick="closeOnboarding()"
+                    class="w-full bg-secondary border-2 border-custom px-6 py-3 rounded-lg text-primary hover:bg-tertiary transition text-lg font-semibold">
+                    I Already Have an Account
+                </button>
+            </div>
+
+            <!-- Name Collection -->
+            <div id="onboardingName" class="hidden p-8">
+                <div class="mb-6 text-center">
+                    <i class="fas fa-user-circle text-5xl accent-color"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-primary mb-4 text-center">What's your name?</h2>
+                <p class="text-secondary mb-6 text-center">We'll use this to personalize your experience</p>
+                
+                <input type="text" id="userNameInput" placeholder="Enter your name"
+                    class="w-full px-4 py-3 bg-tertiary border border-custom rounded-lg text-primary focus:outline-none focus:border-blue-500 mb-4">
+                
+                <button onclick="continueFromName()"
+                    class="w-full bg-accent text-white px-6 py-3 rounded-lg hover:bg-accent-hover transition font-semibold">
+                    Continue
+                </button>
+            </div>
+
+            <!-- Folder Selection -->
+            <div id="onboardingFolder" class="hidden p-8">
+                <div class="mb-6 text-center">
+                    <i class="fas fa-folder-open text-5xl accent-color"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-primary mb-2 text-center" id="folderGreeting">Choose Storage Location</h2>
+                <p class="text-secondary mb-6 text-center">
+                    Select a folder to store all your passwords and information.<br>
+                    <strong class="text-primary">Tip:</strong> Store it deep in your system for extra security.
+                </p>
+                
+                <button onclick="selectFolderOnboarding()"
+                    class="w-full bg-tertiary border-2 border-custom px-6 py-3 rounded-lg text-primary hover:bg-primary transition font-semibold mb-4 flex items-center justify-center gap-2">
+                    <i class="fas fa-folder-open"></i>
+                    Select Storage Folder
+                </button>
+                
+                <div id="selectedFolderPath" class="text-base text-center mb-6 min-h-[28px] font-medium"></div>
+                
+                <button id="continueToMasterKeyBtn" onclick="continueToMasterKey()" disabled
+                    class="w-full bg-accent text-white px-6 py-3 rounded-lg hover:bg-accent-hover transition font-semibold disabled:opacity-50 disabled:cursor-not-allowed">
+                    Continue
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- MASTER KEY EXPLANATION MODAL -->
+    <!-- ============================================ -->
+    <div id="masterKeyExplanationModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-secondary rounded-xl shadow-2xl w-full max-w-4xl" style="max-height: 95vh;">
+            <div class="p-8 overflow-y-auto" style="max-height: 95vh;">
+                <div class="text-center mb-6">
+                    <i class="fas fa-key text-6xl accent-color"></i>
+                </div>
+                
+                <h2 class="text-3xl font-bold text-primary mb-8 text-center">Understanding Master Key</h2>
+                
+                <div class="grid md:grid-cols-2 gap-6 mb-8">
+                    <!-- What is it -->
+                    <div class="bg-tertiary border border-custom rounded-lg p-6">
+                        <h3 class="font-semibold text-primary mb-3 flex items-center gap-2 text-lg">
+                            <i class="fas fa-question-circle accent-color text-xl"></i>
+                            What is a Master Key?
+                        </h3>
+                        <p class="text-secondary">
+                            A master key is a <strong class="text-primary">single password</strong> that encrypts and protects 
+                            all your saved passwords. Think of it as the key to your digital vault.
+                        </p>
+                    </div>
+
+                    <!-- Why it matters -->
+                    <div class="bg-tertiary border border-custom rounded-lg p-6">
+                        <h3 class="font-semibold text-primary mb-3 flex items-center gap-2 text-lg">
+                            <i class="fas fa-exclamation-triangle accent-color text-xl"></i>
+                            Why It Matters
+                        </h3>
+                        <p class="text-secondary">
+                            Without your master key, <strong class="text-primary">your passwords cannot be retrieved</strong>. 
+                            This ensures maximum security - even if someone gets your files, they can't read them.
+                        </p>
+                    </div>
+
+                    <!-- How you'll use it -->
+                    <div class="bg-tertiary border border-custom rounded-lg p-6">
+                        <h3 class="font-semibold text-primary mb-3 flex items-center gap-2 text-lg">
+                            <i class="fas fa-lightbulb accent-color text-xl"></i>
+                            How You'll Use It
+                        </h3>
+                        <ul class="text-secondary space-y-2">
+                            <li>• Unlock the dashboard when you open Altron</li>
+                            <li>• Your session stays active for <strong class="text-primary">7 days</strong></li>
+                            <li>• Click "Lock" to logout manually anytime</li>
+                            <li>• All passwords encrypted with <strong class="text-primary">AES-256</strong></li>
+                        </ul>
+                    </div>
+
+                    <!-- Important reminder -->
+                    <div class="bg-danger bg-opacity-10 border-2 border-danger rounded-lg p-6">
+                        <h3 class="font-semibold text-danger mb-3 flex items-center gap-2 text-lg">
+                            <i class="fas fa-shield-alt text-xl"></i>
+                            Remember Your Key!
+                        </h3>
+                        <p class="text-secondary">
+                            If you forget your master key, there is <strong class="text-primary">no way to recover</strong> your passwords. 
+                            Choose something memorable but strong.
+                        </p>
+                    </div>
+                </div>
+
+                <button onclick="showMasterKeyCreation()"
+                    class="w-full bg-accent text-white px-6 py-4 rounded-lg hover:bg-accent-hover transition text-lg font-semibold">
+                    I Understand, Create Master Key
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- MASTER KEY CREATION MODAL -->
+    <!-- ============================================ -->
+    <div id="masterKeyCreationModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div class="bg-secondary rounded-xl shadow-2xl max-w-md w-full">
+            <div class="p-8">
+                <div class="text-center mb-6">
+                    <i class="fas fa-lock text-5xl accent-color"></i>
+                </div>
+                
+                <h2 class="text-2xl font-bold text-primary mb-6 text-center">Create Your Master Key</h2>
+                
+                <div class="space-y-4 mb-6">
+                    <!-- New Master Key -->
+                    <div>
+                        <label class="block text-sm font-medium text-primary mb-2">Master Key</label>
+                        <div class="relative">
+                            <input type="password" id="newMasterKeyInput" placeholder="Enter master key"
+                                class="w-full px-4 py-3 pr-12 bg-tertiary border border-custom rounded-lg text-primary focus:outline-none focus:border-blue-500">
+                            <button onclick="toggleNewMasterKeyVisibility()" type="button"
+                                class="absolute right-3 top-1/2 -translate-y-1/2 text-secondary hover:text-blue-500 transition">
+                                <i class="fas fa-eye" id="toggleNewMasterKeyIcon"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Confirm Master Key -->
+                    <div>
+                        <label class="block text-sm font-medium text-primary mb-2">Confirm Master Key</label>
+                        <div class="relative">
+                            <input type="password" id="confirmMasterKeyInput" placeholder="Re-enter master key"
+                                class="w-full px-4 py-3 pr-12 bg-tertiary border border-custom rounded-lg text-primary focus:outline-none focus:border-blue-500">
+                            <button onclick="toggleConfirmMasterKeyVisibility()" type="button"
+                                class="absolute right-3 top-1/2 -translate-y-1/2 text-secondary hover:text-blue-500 transition">
+                                <i class="fas fa-eye" id="toggleConfirmMasterKeyIcon"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-tertiary border border-custom rounded-lg p-3 mb-6">
+                    <p class="text-xs text-secondary">
+                        <i class="fas fa-info-circle accent-color mr-1"></i>
+                        Make sure it's at least <strong class="text-primary">8 characters</strong> long and something you'll remember!
+                    </p>
+                </div>
+
+                <button onclick="createMasterKey()"
+                    class="w-full bg-accent text-white px-6 py-3 rounded-lg hover:bg-accent-hover transition font-semibold">
+                    Create Master Key & Continue
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================ -->
+    <!-- HELP MODAL -->
+    <!-- ============================================ -->
     <div id="helpModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
         onclick="closeHelpOnBackdrop(event)">
         <div class="bg-secondary rounded-xl shadow-2xl max-w-2xl w-full max-h-[80vh] overflow-hidden flex flex-col"
@@ -24,7 +224,7 @@
             <div class="px-6 py-4 border-b border-custom flex items-center justify-between">
                 <div class="flex items-center gap-3">
                     <i class="fas fa-question-circle accent-color text-2xl"></i>
-                    <h2 class="text-xl font-semibold text-primary">How to Use</h2>
+                    <h2 class="text-xl font-semibold text-primary">How to Use Altron</h2>
                 </div>
                 <button onclick="closeHelp()"
                     class="w-8 h-8 flex items-center justify-center rounded-lg text-secondary hover:bg-tertiary transition">
@@ -35,47 +235,6 @@
             <!-- Modal Body -->
             <div class="flex-1 overflow-y-auto px-6 py-6">
                 <div class="space-y-6">
-                    <!-- Master Key Info -->
-                    <div>
-                        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center gap-2">
-                            <i class="fas fa-key accent-color text-sm"></i>
-                            What is a Master Key?
-                        </h3>
-                        <p class="text-secondary mb-2">
-                            Your master key is a password that encrypts all your saved passwords using AES-256
-                            encryption.
-                            Think of it as the <strong class="text-primary">one password to rule them all</strong>.
-                        </p>
-                        <ul class="list-disc list-inside space-y-2 text-secondary ml-4">
-                            <li>Choose a <strong class="text-primary">strong, memorable</strong> master key</li>
-                            <li>This key is <strong class="text-primary">never stored</strong> anywhere</li>
-                            <li>If you forget it, your passwords <strong class="text-primary">cannot be
-                                    recovered</strong></li>
-                            <li>First time? Enter a new master key to get started</li>
-                        </ul>
-                    </div>
-
-                    <!-- Storage Folder Info -->
-                    <div>
-                        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center gap-2">
-                            <i class="fas fa-folder-open accent-color text-sm"></i>
-                            What is a Storage Folder?
-                        </h3>
-                        <p class="text-secondary mb-2">
-                            The storage folder is where your <strong class="text-primary">encrypted password
-                                file</strong> will be saved on your computer.
-                            All data stays on your device - nothing is sent to any server.
-                        </p>
-                        <ul class="list-disc list-inside space-y-2 text-secondary ml-4">
-                            <li>Choose a <strong class="text-primary">secure location</strong> on your computer</li>
-                            <li>Creates a file called <code
-                                    class="text-primary bg-tertiary px-1 py-0.5 rounded">passwords.enc</code></li>
-                            <li>File is <strong class="text-primary">encrypted</strong> and can only be read with your
-                                master key</li>
-                            <li>Works completely <strong class="text-primary">offline</strong> - no internet needed</li>
-                        </ul>
-                    </div>
-
                     <!-- Getting Started -->
                     <div>
                         <h3 class="text-lg font-semibold text-primary mb-3 flex items-center gap-2">
@@ -83,96 +242,84 @@
                             Getting Started
                         </h3>
                         <ol class="list-decimal list-inside space-y-2 text-secondary">
-                            <li>Click <strong class="text-primary">Select Storage Folder</strong> to choose where your
-                                encrypted passwords will be stored</li>
-                            <li>Enter a <strong class="text-primary">Master Key</strong> - this encrypts all your
-                                passwords (keep it safe!)</li>
-                            <li>Click <strong class="text-primary">Unlock</strong> to access the app</li>
+                            <li>Enter your name and select a storage folder</li>
+                            <li>Create a <strong class="text-primary">master key</strong> to encrypt your passwords</li>
+                            <li>Start generating and saving passwords</li>
+                            <li>Your session lasts <strong class="text-primary">7 days</strong></li>
                         </ol>
+                    </div>
+
+                    <!-- Master Key Info -->
+                    <div>
+                        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center gap-2">
+                            <i class="fas fa-key accent-color text-sm"></i>
+                            Master Key
+                        </h3>
+                        <p class="text-secondary mb-2">
+                            Your master key encrypts all passwords using <strong class="text-primary">AES-256 encryption</strong>.
+                        </p>
+                        <ul class="list-disc list-inside space-y-2 text-secondary ml-4">
+                            <li>Hashed with <strong class="text-primary">PBKDF2</strong> (100,000 iterations)</li>
+                            <li>Never stored in plain text</li>
+                            <li>Cannot be recovered if forgotten</li>
+                            <li>Required to unlock your passwords</li>
+                        </ul>
+                    </div>
+
+                    <!-- Session Management -->
+                    <div>
+                        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center gap-2">
+                            <i class="fas fa-clock accent-color text-sm"></i>
+                            Sessions
+                        </h3>
+                        <ul class="list-disc list-inside space-y-2 text-secondary ml-4">
+                            <li>Sessions last <strong class="text-primary">7 days</strong> from login</li>
+                            <li>Auto-login on browser restart (if session valid)</li>
+                            <li>Auto-logout after expiration</li>
+                            <li>Click <strong class="text-primary">Lock</strong> to logout manually</li>
+                        </ul>
                     </div>
 
                     <!-- Generating Passwords -->
                     <div>
                         <h3 class="text-lg font-semibold text-primary mb-3 flex items-center gap-2">
                             <i class="fas fa-dice accent-color text-sm"></i>
-                            Generating Passwords
+                            Password Generator
                         </h3>
-                        <p class="text-secondary mb-2">Use the password generator to create strong, random passwords:
-                        </p>
                         <ul class="list-disc list-inside space-y-2 text-secondary ml-4">
-                            <li>Adjust the length slider (8-64 characters)</li>
-                            <li>Select character types: uppercase, lowercase, numbers, symbols</li>
-                            <li>Click <strong class="text-primary">Generate</strong> to create a new password</li>
-                            <li>The strength meter shows how secure your password is</li>
+                            <li>Adjust length (8-64 characters)</li>
+                            <li>Choose character types</li>
+                            <li>View strength meter</li>
+                            <li>Save with custom labels</li>
                         </ul>
-                    </div>
-                    <!-- Saving Passwords -->
-                    <div>
-                        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center gap-2">
-                            <i class="fas fa-save accent-color text-sm"></i>
-                            Saving Passwords
-                        </h3>
-                        <ol class="list-decimal list-inside space-y-2 text-secondary">
-                            <li>After generating a password, the save form will appear</li>
-                            <li>Enter a <strong class="text-primary">Label</strong> (e.g., GitHub, Gmail, Banking)</li>
-                            <li>The generated password is automatically filled</li>
-                            <li>Check the confirmation box to confirm you'll use this password</li>
-                            <li>Click <strong class="text-primary">Save</strong></li>
-                        </ol>
                     </div>
 
                     <!-- Managing Passwords -->
                     <div>
                         <h3 class="text-lg font-semibold text-primary mb-3 flex items-center gap-2">
-                            <i class="fas fa-list accent-color text-sm"></i>
-                            Managing Passwords
+                            <i class="fas fa-th-large accent-color text-sm"></i>
+                            Password Tiles
                         </h3>
                         <ul class="list-disc list-inside space-y-2 text-secondary ml-4">
-                            <li><strong class="text-primary">Search:</strong> Use the search box to filter passwords by
-                                label</li>
-                            <li><strong class="text-primary">View:</strong> Click the eye icon to see password details
-                            </li>
-                            <li><strong class="text-primary">Copy:</strong> Click the copy icon to copy password to
-                                clipboard</li>
-                            <li><strong class="text-primary">Delete:</strong> Click the trash icon to remove a password
-                            </li>
+                            <li>View passwords in tile format</li>
+                            <li>Colored avatars with service initials</li>
+                            <li>Quick actions: View, Copy, Delete</li>
+                            <li>Search by label</li>
                         </ul>
                     </div>
 
-                    <!-- Themes -->
-                    <div>
-                        <h3 class="text-lg font-semibold text-primary mb-3 flex items-center gap-2">
-                            <i class="fas fa-palette accent-color text-sm"></i>
-                            Themes
-                        </h3>
-                        <p class="text-secondary mb-2">Choose from 6 beautiful themes:</p>
-                        <ul class="list-disc list-inside space-y-2 text-secondary ml-4">
-                            <li><strong class="text-primary">Light:</strong> Clean and minimal default theme</li>
-                            <li><strong class="text-primary">Dark:</strong> Comfortable dark mode</li>
-                            <li><strong class="text-primary">VS Code Dark:</strong> Classic editor theme</li>
-                            <li><strong class="text-primary">Monokai:</strong> Vibrant dark theme</li>
-                            <li><strong class="text-primary">Solarized Dark:</strong> Eye-friendly dark theme</li>
-                            <li><strong class="text-primary">Neon:</strong> Futuristic cyberpunk theme</li>
-                        </ul>
-                    </div>
-
-                    <!-- Security & Important Notes -->
+                    <!-- Security -->
                     <div>
                         <h3 class="text-lg font-semibold text-primary mb-3 flex items-center gap-2">
                             <i class="fas fa-shield-alt accent-color text-sm"></i>
-                            Security & Important Notes
+                            Security Features
                         </h3>
                         <ul class="list-disc list-inside space-y-2 text-secondary ml-4">
-                            <li>All passwords are encrypted with <strong class="text-primary">AES-256</strong> using
-                                your master key</li>
-                            <li>Data is stored <strong class="text-primary">locally</strong> on your device - never
-                                uploaded to any server</li>
-                            <li>This app requires <strong class="text-primary">Chrome or Edge</strong> browser</li>
-                            <li>Your master key is <strong class="text-primary">never stored</strong> - if you forget
-                                it, passwords cannot be recovered</li>
-                            <li>The app works <strong class="text-primary">completely offline</strong></li>
-                            <li>Click <strong class="text-primary">Lock</strong> when you're done to secure your
-                                passwords</li>
+                            <li>AES-256 encryption for passwords</li>
+                            <li>PBKDF2 hashing for master key</li>
+                            <li>All data stored locally (offline)</li>
+                            <li>No cloud, no tracking, no accounts</li>
+                            <li>Chrome/Edge browser required</li>
                         </ul>
                     </div>
                 </div>
@@ -188,7 +335,9 @@
         </div>
     </div>
 
-    <!-- View Password Modal -->
+    <!-- ============================================ -->
+    <!-- VIEW PASSWORD MODAL -->
+    <!-- ============================================ -->
     <div id="viewPasswordModal"
         class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
         onclick="closeViewPasswordOnBackdrop(event)">
@@ -242,13 +391,21 @@
         </div>
     </div>
 
-    <!-- Navbar -->
+    <!-- ============================================ -->
+    <!-- NAVBAR -->
+    <!-- ============================================ -->
     <nav id="navbar" class="hidden bg-secondary border-b border-custom px-6 py-4 flex items-center justify-between">
         <div class="flex items-center gap-3">
             <i class="fas fa-shield-alt accent-color text-xl"></i>
-            <span class="text-lg font-semibold text-primary">Altron - Local Password Manager</span>
+            <span class="text-lg font-semibold text-primary">Altron</span>
         </div>
         <div class="flex items-center gap-3">
+            <!-- User Section -->
+            <div id="userSection" class="hidden flex items-center gap-2 px-3 py-2 bg-tertiary border border-custom rounded-lg">
+                <i class="fas fa-user-circle accent-color"></i>
+                <span class="text-sm font-medium text-primary" id="headerUsername">User</span>
+            </div>
+            
             <button onclick="openHelp()"
                 class="px-3 py-2 bg-tertiary border border-custom rounded-lg text-primary hover:bg-secondary transition flex items-center gap-2"
                 title="Help">
@@ -265,29 +422,24 @@
             </select>
             <button onclick="lockApp()" class="px-3 py-2 bg-danger text-white rounded-lg hover:opacity-90 transition"
                 title="Lock">
-                <i class="fas fa-lock"></i>
+                <i class="fas fa-lock"></i> Lock
             </button>
         </div>
     </nav>
 
-    <!-- Main Content -->
+    <!-- ============================================ -->
+    <!-- MAIN CONTENT -->
+    <!-- ============================================ -->
     <div class="flex-1 overflow-hidden flex flex-col">
-        <div class="max-w-4xl mx-auto w-full h-full overflow-y-auto px-5 py-6">
+        <div class="max-w-6xl mx-auto w-full h-full overflow-y-auto px-5 py-6">
             <!-- Status Message -->
             <div id="statusMessage" class="hidden mb-5 px-4 py-3 rounded-lg border-l-4"></div>
 
-            <!-- Lock Screen -->
-            <div id="lockScreen" class="flex flex-col items-center justify-center min-h-[60vh] text-center px-5 py-10">
+            <!-- Lock Screen (Returning Users) -->
+            <div id="lockScreen" class="hidden flex flex-col items-center justify-center min-h-[60vh] text-center px-5 py-10">
                 <i class="fas fa-lock text-5xl accent-color mb-5"></i>
-                <h2 class="text-3xl font-semibold text-primary mb-3">Enter Master Key</h2>
-                <p class="text-secondary mb-4">Your master key encrypts all passwords locally</p>
-
-                <!-- Learn More Button -->
-                <button onclick="openHelp()"
-                    class="mb-8 text-accent hover:underline flex items-center gap-2 text-sm font-medium">
-                    <i class="fas fa-question-circle"></i>
-                    What is a Master Key & Storage Folder?
-                </button>
+                <h2 class="text-3xl font-semibold text-primary mb-3">Welcome Back!</h2>
+                <p class="text-secondary mb-8">Enter your master key to unlock</p>
 
                 <div class="w-full max-w-md">
                     <div class="mb-4">
@@ -301,18 +453,17 @@
                         </div>
                     </div>
                     <button onclick="unlockApp()"
-                        class="w-full bg-accent text-white px-4 py-2 rounded-lg hover:bg-accent-hover transition flex items-center justify-center gap-2">
+                        class="w-full bg-accent text-white px-4 py-2 rounded-lg hover:bg-accent-hover transition flex items-center justify-center gap-2 mb-4">
                         <i class="fas fa-unlock"></i> Unlock
                     </button>
-                    <p class="mt-4 text-sm text-secondary">First time? Enter a new master key</p>
-                </div>
 
-                <div class="mt-8">
-                    <button onclick="selectDirectory()"
-                        class="bg-secondary border border-custom px-4 py-2 rounded-lg text-primary hover:bg-tertiary transition flex items-center gap-2">
-                        <i class="fas fa-folder-open icon-standard"></i> Select Storage Folder
-                    </button>
-                    <p id="selectedPath" class="mt-2 text-sm text-secondary"></p>
+                    <div class="mt-8">
+                        <button onclick="selectDirectory()"
+                            class="bg-secondary border border-custom px-4 py-2 rounded-lg text-primary hover:bg-tertiary transition flex items-center gap-2 mx-auto">
+                            <i class="fas fa-folder-open icon-standard"></i> Select Storage Folder
+                        </button>
+                        <p id="selectedPath" class="mt-2 text-sm text-secondary"></p>
+                    </div>
                 </div>
             </div>
 
@@ -326,7 +477,7 @@
                     </button>
                     <button onclick="switchTab('passwords')"
                         class="tab-btn px-6 py-3 text-secondary font-medium border-b-2 border-transparent -mb-0.5 hover:text-primary transition">
-                        <i class="fas fa-list mr-2"></i> Passwords <span id="passwordCount"
+                        <i class="fas fa-th-large mr-2"></i> Passwords <span id="passwordCount"
                             class="text-secondary">(0)</span>
                     </button>
                 </div>
@@ -404,8 +555,8 @@
                         </div>
 
                         <div class="mb-4">
-                            <label class="block text-sm font-medium text-primary mb-2">Label</label>
-                            <input type="text" id="passwordLabel" placeholder="GitHub, Gmail, etc."
+                            <label class="block text-sm font-medium text-primary mb-2">Label / Service Name</label>
+                            <input type="text" id="passwordLabel" placeholder="e.g., GitHub, Gmail, Netflix"
                                 class="w-full px-3 py-2 bg-tertiary border border-custom rounded-lg text-primary focus:outline-none focus:border-blue-500">
                         </div>
 
@@ -437,20 +588,33 @@
                 <!-- Passwords Tab -->
                 <div id="passwordsTab" class="tab-content hidden">
                     <div class="bg-secondary border border-custom rounded-xl p-6 shadow-sm">
-                        <div id="searchBox" class="hidden mb-5">
-                            <div class="relative">
+                        <!-- Search Box -->
+                        <div id="searchBox" class="hidden mb-5 flex items-center justify-between">
+                            <div class="relative flex-1 max-w-md">
                                 <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-secondary"></i>
                                 <input type="search" id="searchInput" placeholder="Search passwords..."
                                     oninput="filterPasswords()"
                                     class="w-full pl-10 pr-3 py-2 bg-tertiary border border-custom rounded-lg text-primary focus:outline-none focus:border-blue-500">
                             </div>
+                            <button onclick="deleteAllPasswords()" 
+                                    class="ml-3 px-4 py-2 bg-danger text-white rounded-lg hover:opacity-90 transition flex items-center gap-2"
+                                    title="Delete All Passwords">
+                                <i class="fas fa-trash"></i> Delete All
+                            </button>
                         </div>
 
-                        <ul id="passwordList" class="space-y-2"></ul>
+                        <!-- Password Grid -->
+                        <div id="passwordGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
 
-                        <div id="emptyMessage" class="text-center py-12 text-secondary">
-                            <i class="fas fa-inbox text-5xl mb-4 opacity-50"></i>
-                            <p>No passwords saved yet</p>
+                        <!-- Empty State -->
+                        <div id="emptyState" class="text-center py-16">
+                            <i class="fas fa-inbox text-6xl mb-6 opacity-30 accent-color"></i>
+                            <h3 class="text-2xl font-semibold text-primary mb-3">No Passwords Yet</h3>
+                            <p class="text-secondary mb-6">Let's create your first password to get started!</p>
+                            <button onclick="showCreatePasswordForm()"
+                                class="bg-accent text-white px-6 py-3 rounded-lg hover:bg-accent-hover transition inline-flex items-center gap-2 font-semibold">
+                                <i class="fas fa-plus"></i> Create Your First Password
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -458,16 +622,19 @@
         </div>
     </div>
 
-    <!-- Footer -->
+    <!-- ============================================ -->
+    <!-- FOOTER -->
+    <!-- ============================================ -->
     <footer id="footer"
         class="hidden bg-secondary border-t border-custom px-6 py-3 text-center text-sm text-secondary flex items-center justify-center gap-4">
-        <span>Encrypted locally • AES-256 • No cloud storage</span>
+        <span>Encrypted locally • AES-256 • PBKDF2 • No cloud storage</span>
         <span>•</span>
         <a href="https://github.com/srsdesigndev/altron" target="_blank" rel="noopener noreferrer"
             class="flex items-center gap-2 hover:text-blue-500 transition">
             <i class="fab fa-github"></i> View on GitHub
         </a>
     </footer>
+
     <script src="../script/dashboard/config.js"></script>
     <script src="../script/dashboard/script.js"></script>
 </body>
